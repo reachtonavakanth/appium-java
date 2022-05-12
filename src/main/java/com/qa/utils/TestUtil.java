@@ -6,7 +6,7 @@ import java.util.Properties;
 public class TestUtil {
 
     protected Properties prop;
-
+    public long timeOut = 10;
     /*
      * @author: Navakanth Tunga
      * @description: To read data from '.properties' file based on Key
@@ -52,7 +52,7 @@ public class TestUtil {
         }
     }
 
-    protected static String getMainResources(String fileName) {
+    protected static String getMainResourcesPath(String fileName) {
 
         String getMainResourcesPath = System.getProperty("user.dir") + File.separator + "src" +
                 File.separator + "main" + File.separator + "resources" +
@@ -60,14 +60,14 @@ public class TestUtil {
         return getMainResourcesPath;
     }
 
-    protected static String getTestResources(String fileName) {
+    protected static String getTestResourcesPath(String fileName) {
 
         String getTestResourcesPath = System.getProperty("user.dir") + File.separator + "src" +
                 File.separator + "main" + File.separator + "resources" +
                 File.separator + fileName;
         return getTestResourcesPath;
     }
-    protected static String getAppLocation(String fileName) {
+    protected static String getAppPath(String fileName) {
         String appPath = System.getProperty("user.dir") + File.separator + "src" +
                 File.separator + "test" + File.separator + "resources" + File.separator + "app" +
                 File.separator + fileName;
