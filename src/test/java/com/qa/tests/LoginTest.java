@@ -40,11 +40,10 @@ public class LoginTest extends BaseClass {
             loginPage.enterUserName("dummy");
             loginPage.enterPassword("dummy");
             loginPage.tapLoginButton();
-            String actual = loginPage.getLoginErrMsg("text");
+            String actual = loginPage.getLoginErrMsg();
             String expected = "Username and password do not match any user in this service.";
             Assert.assertEquals(actual, expected, "Expected and Actual are matched !");
         }catch (Exception e){
-           // e.printStackTrace();
             throw e;
         }
     }
@@ -55,11 +54,10 @@ public class LoginTest extends BaseClass {
             loginPage.enterUserName("standard_user");
             loginPage.enterPassword("secret_sauce");
             productsPage = loginPage.tapLoginButton();
-            String actual = productsPage.getPageTitle("text");
-            String expected = "PRODUCT";
+            String actual = productsPage.getPageTitle();
+            String expected = "PRODUCTS";
             Assert.assertEquals(actual, expected, "Page Title is matched !");
         }catch (Exception e){
-           // e.printStackTrace();
             throw e;
         }
     }

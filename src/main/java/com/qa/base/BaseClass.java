@@ -18,6 +18,7 @@ import java.net.URL;
 
 public class BaseClass extends TestUtil {
     protected static AppiumDriver driver;
+    protected static String env ;
     public BaseClass(){
         PageFactory.initElements(new AppiumFieldDecorator(driver),this);
     }
@@ -25,12 +26,16 @@ public class BaseClass extends TestUtil {
     @BeforeTest
     public void launchApp() {
         String propFilePath = TestUtil.getMainResourcesPath("appLaunch.properties");
-        String env = getKeyValue(propFilePath, "environment");
+        env = getKeyValue(propFilePath, "environment");
         try {
             if (env.equalsIgnoreCase("Android")) {
                 DesiredCapabilities caps = new DesiredCapabilities();
+                if(getKeyValue(propFilePath, "emulator").equalsIgnoreCase("Yes")){
+                    caps.setCapability("avd", getKeyValue(propFilePath, "emulatorName"));
+                    caps.setCapability("avdLaunchTimeout", 900000);
+                }
                 caps.setCapability(MobileCapabilityType.AUTOMATION_NAME, getKeyValue(propFilePath, "androidAutomationName"));
-                caps.setCapability(MobileCapabilityType.UDID, getKeyValue(propFilePath, "androidUdid"));
+                //caps.setCapability(MobileCapabilityType.UDID, getKeyValue(propFilePath, "androidUdid"));
                 caps.setCapability(MobileCapabilityType.PLATFORM_NAME, getKeyValue(propFilePath, "androidPlatformName"));
                 caps.setCapability(MobileCapabilityType.PLATFORM_VERSION, getKeyValue(propFilePath, "androidPlatformVersion"));
                 caps.setCapability(MobileCapabilityType.DEVICE_NAME, getKeyValue(propFilePath, "androidDeviceName"));
@@ -46,7 +51,8 @@ public class BaseClass extends TestUtil {
                 caps.setCapability(MobileCapabilityType.AUTOMATION_NAME, getKeyValue(propFilePath, "iosAutomationName"));
                 caps.setCapability(MobileCapabilityType.DEVICE_NAME, getKeyValue(propFilePath, "iosDeviceName"));
                 caps.setCapability(MobileCapabilityType.UDID, getKeyValue(propFilePath, "iosUdid"));
-                caps.setCapability(MobileCapabilityType.APP, getAppPath(getKeyValue(propFilePath, "iosAppName")));
+                caps.setCapability("bundleId", getKeyValue(propFilePath, "iosBundleId"));
+              //  caps.setCapability(MobileCapabilityType.APP, getAppPath(getKeyValue(propFilePath, "iosAppName")));
                 // caps.setCapability("ignoreHiddenApiPolicyError", true);
                 URL url = new URL(getKeyValue(propFilePath, "appiumURL"));
                 driver = new IOSDriver(url, caps);
@@ -75,12 +81,34 @@ public class BaseClass extends TestUtil {
         waitForEleVisibility(ele);
         ele.click();
     }
+
+    public void clearElement(MobileElement ele){
+        waitForEleVisibility(ele);
+        ele.clear();
+    }
     public void sendDataToElement(MobileElement ele,String value){
         waitForEleVisibility(ele);
+        clearElement(ele);
         ele.sendKeys(value);
     }
-    public String getElementAttribute(MobileElement ele, String attributeName){
+    public String getAndroidElementAttribute(MobileElement ele, String attributeName){
         waitForEleVisibility(ele);
         return ele.getAttribute(attributeName);
+    }
+
+    public String getIOSElementAttribute(MobileElement ele, String attributeName){
+        waitForEleVisibility(ele);
+        return ele.getAttribute(attributeName);
+    }
+    // in iOS text attribute will not work hence using label attribute
+    public String getText(MobileElement ele){
+        String text= null;
+        if(env.equalsIgnoreCase("Android")){
+            text=  getAndroidElementAttribute(ele, "text");
+        }
+        else if(env.equalsIgnoreCase("iOS")){
+            text=  getIOSElementAttribute(ele,"label");
+        }
+        return text;
     }
 }
