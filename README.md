@@ -10,3 +10,7 @@ In this POC below test cases are automated in Android and iOS platforms. Mobile 
 # Important Tools
 1. Appium used as Automation tool.
 2. Hybrid framework is developed in Java program language.
+
+
+# Mobile App Reference
+https://github.com/saucelabs/sample-app-mobile
