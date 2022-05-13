@@ -1,4 +1,58 @@
 {
-  "key": "value"
-
+  "key": "value",
+  "TC_01": {
+    "username": "invalidusername",
+    "password": "secret_sauce"
+  },
+  "TC_02": {
+    "username": "standard_user",
+    "password": "invalidpassword"
+  },
+  "TC_03": {
+    "username": "standard_user",
+    "password": "secret_sauce"
+  },
+  "employees": [{
+    "firstName": "John Emp",
+    "lastName": "Doe Emp"
+  },
+    {
+      "firstName": "Anna Emp",
+      "lastName": "Smith Emp"
+    },
+    {
+      "firstName": "Peter Emp",
+      "lastName": "Jones Emp"
+    }
+  ],
+  "manager": [{
+    "firstName": "John Man",
+    "lastName": "Doe Man"
+  },
+    {
+      "firstName": "Anna Man",
+      "lastName": "Smith Man"
+    },
+    {
+      "firstName": "Peter Man",
+      "lastName": "Jones Man"
+    }
+  ],
+  "temp": {
+    "arr1": {
+      "alpha1": "xyz1",
+      "keys": [{
+        "test1": "value1",
+        "test2": "value2"
+      },
+        {
+          "test3": "value3",
+          "test4": "value4"
+        }
+      ]
+    },
+    "arr2": {
+      "alpha2": "xyz2"
+    }
+  }
 }
