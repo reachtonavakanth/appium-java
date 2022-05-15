@@ -5,7 +5,7 @@ import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
-public class MenuPage extends BaseClass {
+public class CartPage extends MenuPage {
     @AndroidFindBy(accessibility = "")
     @iOSXCUITFindBy(id ="test-Menu")
     private MobileElement menuIcon;
@@ -14,13 +14,5 @@ public class MenuPage extends BaseClass {
     @iOSXCUITFindBy(id ="test-Cart")
     private MobileElement cartIcon;
 
-    public MenuPage tapMenuICon() {
-       tapOnElement(menuIcon);
-       return SettingsPage();
-    }
 
-    public MenuPage tapCartICon() {
-        tapOnElement(cartIcon);
-        return CarPage();
-    }
 }

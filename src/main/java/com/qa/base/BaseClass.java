@@ -2,6 +2,7 @@ package com.qa.base;
 
 import com.qa.utils.TestUtil;
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.InteractsWithApps;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
@@ -11,21 +12,28 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.ITestResult;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 
+import java.io.IOException;
 import java.net.URL;
 
 public class BaseClass extends TestUtil {
     protected static AppiumDriver driver;
     protected static String env ;
+    public static String testDataFilePath;
+    public static String stringsFilePath;
     public BaseClass(){
         PageFactory.initElements(new AppiumFieldDecorator(driver),this);
     }
 
     @BeforeTest
-    public void launchApp() {
+    public void launchApp() throws IOException {
         String propFilePath = TestUtil.getMainResourcesPath("appLaunch.properties");
+        testDataFilePath = getTestDataPath("Login.json");
+        stringsFilePath = getTestDataPath("Strings.json");
         env = getKeyValue(propFilePath, "environment");
         try {
             if (env.equalsIgnoreCase("Android")) {
@@ -66,6 +74,25 @@ public class BaseClass extends TestUtil {
     public void tearDown() {
       //  driver.quit();
     }
+    public void closeApp() {
+        ((InteractsWithApps) driver).closeApp();
+    }
+
+    public void launchAppAgain() {
+        ((InteractsWithApps) driver).launchApp();
+    }
+
+    @AfterMethod
+    public void redirect(ITestResult result){
+        if (result.getStatus() == ITestResult.FAILURE) {
+            System.out.println("Test is Fail"); //driver.installApp()
+        }
+        else if (result.getStatus() == ITestResult.SUCCESS) {
+            System.out.println("Test is Pass");
+        }
+        closeApp();
+        launchAppAgain();
+    }
 
     public void waitForEleVisibility(MobileElement ele) {
         WebDriverWait wait = new WebDriverWait(driver, timeOut);
@@ -77,7 +104,7 @@ public class BaseClass extends TestUtil {
         wait.until(ExpectedConditions.visibilityOf(ele));
     }
 
-    public void clickElement(MobileElement ele){
+    public void tapOnElement(MobileElement ele){
         waitForEleVisibility(ele);
         ele.click();
     }
