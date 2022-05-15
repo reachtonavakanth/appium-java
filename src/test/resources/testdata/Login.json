@@ -1,6 +1,14 @@
 {
- "ValidUser": "standard_user",
-  "ValidPassword": "secret_sauce",
-  "LockedUserName": "locked_out_user",
-  "InValidPassword": "Test@123"
+  "TC_01": {
+    "InvalidUserName": "dummy",
+    "InvalidPassword": "dummy"
+  },
+  "TC_02": {
+    "ValidUserName": "standard_user",
+    "ValidPassword": "secret_sauce"
+  },
+  "TC_03": {
+    "LockedUserName": "locked_out_user",
+    "InValidPassword": "Test@123"
+  }
 }

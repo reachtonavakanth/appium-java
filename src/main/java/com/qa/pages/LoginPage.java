@@ -30,7 +30,7 @@ public class LoginPage extends BaseClass {
     }
 
     public ProductsPage tapLoginButton() {
-        clickElement(loginBtn);
+        tapOnElement(loginBtn);
         return new ProductsPage();
     }
 

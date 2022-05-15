@@ -5,21 +5,16 @@ import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
-public class SeetingsPage extends BaseClass {
+public class SettingsPage extends BaseClass {
     @AndroidFindBy(accessibility = "")
-    @iOSXCUITFindBy(id ="test-Menu")
-    private MobileElement menuIcon;
+    @iOSXCUITFindBy(id = "test-LOGOUT")
+    private MobileElement logoutText;
 
-    @AndroidFindBy(accessibility = "")
-    @iOSXCUITFindBy(id ="test-Cart")
-    private MobileElement cartIcon;
 
-    public void tapMenuICon() {
-
+    public LoginPage tapLogoutText() {
+        tapOnElement(logoutText);
+        return new LoginPage();
     }
 
-    public void tapCartICon() {
-        tapOnElement(cartIcon);
 
-    }
 }

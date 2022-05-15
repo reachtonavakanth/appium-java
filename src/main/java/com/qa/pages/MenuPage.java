@@ -5,37 +5,22 @@ import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
-public class LoginPage extends BaseClass {
-    @AndroidFindBy(accessibility = "test-Username")
-    @iOSXCUITFindBy(id ="test-Username")
-    private MobileElement userNameTxtFld;
-    @AndroidFindBy(accessibility = "test-Password")
-    @iOSXCUITFindBy(id ="test-Password")
-    private MobileElement passwordTxtFld;
-    @AndroidFindBy(accessibility = "test-LOGIN")
-    @iOSXCUITFindBy(id ="test-LOGIN")
-    private MobileElement loginBtn;
-    @AndroidFindBy(xpath = "//android.view.ViewGroup[@content-desc='test-Error message']/android.widget.TextView")
-    @iOSXCUITFindBy(id ="Username and password do not match any user in this service.")
-    private MobileElement loginErrMsg;
+public class MenuPage extends BaseClass {
+    @AndroidFindBy(accessibility = "")
+    @iOSXCUITFindBy(id ="test-Menu")
+    private MobileElement menuIcon;
 
-    public LoginPage enterUserName(String userName) {
-        sendDataToElement(userNameTxtFld, userName);
-        return this;
+    @AndroidFindBy(accessibility = "")
+    @iOSXCUITFindBy(id ="test-Cart")
+    private MobileElement cartIcon;
+
+    public SettingsPage tapMenuICon() {
+       tapOnElement(menuIcon);
+       return new SettingsPage();
     }
 
-    public LoginPage enterPassword(String userName) {
-        sendDataToElement(passwordTxtFld, userName);
-        return this;
+    public CartPage tapCartICon() {
+        tapOnElement(cartIcon);
+        return new CartPage();
     }
-
-    public ProductsPage tapLoginButton() {
-        clickElement(loginBtn);
-        return new ProductsPage();
-    }
-
-    public String getLoginErrMsg() {
-        return getText(loginErrMsg);
-    }
-
 }

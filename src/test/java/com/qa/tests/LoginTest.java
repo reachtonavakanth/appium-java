@@ -2,16 +2,25 @@ package com.qa.tests;
 
 import com.qa.base.BaseClass;
 import com.qa.pages.LoginPage;
+import com.qa.pages.MenuPage;
 import com.qa.pages.ProductsPage;
+import com.qa.pages.SettingsPage;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 
 public class LoginTest extends BaseClass {
-
+    JSONObject jsonObjData;
+    JSONArray jsonArrData;
+    JSONObject jsonObjMsg;
     LoginPage loginPage;
     ProductsPage productsPage;
+    SettingsPage settingsPage;
+    MenuPage menuPage;
 
     @BeforeClass
     public void beforeClass() {
@@ -26,7 +35,7 @@ public class LoginTest extends BaseClass {
     @BeforeMethod
     public void beforeMethod(Method m) {
         loginPage = new LoginPage();
-        System.out.println(" *** Started " + m.getName()+ " ***");
+        System.out.println(" *** Started " + m.getName() + " ***");
     }
 
     @AfterMethod
@@ -36,29 +45,54 @@ public class LoginTest extends BaseClass {
 
     @Test
     public void invalidLoginTest_01() {
-        try{
-            loginPage.enterUserName("dummy");
-            loginPage.enterPassword("dummy");
-            loginPage.tapLoginButton();
-            String actual = loginPage.getLoginErrMsg();
-            String expected = "Username and password do not match any user in this service.";
-            Assert.assertEquals(actual, expected, "Expected and Actual are matched !");
-        }catch (Exception e){
-            throw e;
+        try {
+            jsonObjData = getJsonObject(testDataFilePath, "TC_01");
+            jsonObjMsg = getJsonObject(stringsFilePath, "LoginPage");
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
+        loginPage.enterUserName(jsonObjData.getString("InvalidUserName"));
+        loginPage.enterPassword(jsonObjData.getString("InvalidPassword"));
+        loginPage.tapLoginButton();
+        String actual = loginPage.getLoginErrMsg();
+        String expected = jsonObjMsg.get("InvalidCredentials").toString();
+        Assert.assertEquals(actual, expected, "Expected and Actual are matched !");
     }
 
     @Test
     public void validLoginTest_02() {
         try {
-            loginPage.enterUserName("standard_user");
-            loginPage.enterPassword("secret_sauce");
-            productsPage = loginPage.tapLoginButton();
-            String actual = productsPage.getPageTitle();
-            String expected = "PRODUCTS";
-            Assert.assertEquals(actual, expected, "Page Title is matched !");
-        }catch (Exception e){
-            throw e;
+            jsonObjData = getJsonObject(testDataFilePath, "TC_02");
+            jsonObjMsg = getJsonObject(stringsFilePath, "Products");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
+        loginPage.enterUserName(jsonObjData.getString("ValidUserName"));
+        loginPage.enterPassword(jsonObjData.getString("ValidPassword"));
+        productsPage = loginPage.tapLoginButton();
+        String actual = productsPage.getPageTitle();
+        String expected = jsonObjMsg.get("PageTitle").toString();
+        Assert.assertEquals(actual, expected, "Page Title is matched !");
     }
+
+    @Test
+    public void verifyLogout() {
+        try {
+            jsonObjData = getJsonObject(testDataFilePath, "TC_02");
+            jsonObjMsg = getJsonObject(stringsFilePath, "Products");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        loginPage.enterUserName(jsonObjData.getString("ValidUserName"));
+        loginPage.enterPassword(jsonObjData.getString("ValidPassword"));
+        productsPage = loginPage.tapLoginButton();
+        settingsPage = productsPage.tapMenuICon();
+        loginPage = settingsPage.tapLogoutText();
+    }
+
+
 }
