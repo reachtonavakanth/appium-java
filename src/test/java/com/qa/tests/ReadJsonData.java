@@ -1,5 +1,6 @@
 //https://github.com/stleary/JSON-java
 // <!-- https://mvnrepository.com/artifact/org.json/json -->
+// https://stleary.github.io/JSON-java/
 
 package com.qa.tests;
 
@@ -11,7 +12,7 @@ import org.testng.annotations.Test;
 import java.io.*;
 import java.io.File;
 
-public class ReadData {
+public class ReadJsonData {
     public static String path;
 
     @Test
@@ -26,13 +27,10 @@ public class ReadData {
     }
 
     private static void readfromFile() throws FileNotFoundException {
-        //FileReader file = new FileReader(path);
-
         InputStream inputstream = new FileInputStream(path);
-
-
         JSONTokener tokener = new JSONTokener(inputstream);
         JSONObject jObj = new JSONObject(tokener);
+
         System.out.println(jObj.getString("key").toString());
 
         System.out.println(jObj.getJSONObject("TC_01"));
