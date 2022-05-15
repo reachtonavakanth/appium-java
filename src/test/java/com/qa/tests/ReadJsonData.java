@@ -65,6 +65,9 @@ public class ReadData {
         System.out.println(jObj.getJSONArray("manager").getJSONObject(2));
         System.out.println(jObj.getJSONArray("manager"));
 
+        System.out.println(jObj.getJSONObject("temp").getJSONObject("arr1").getString("alpha1"));
+        System.out.println(jObj.getJSONObject("temp").getJSONObject("arr1").getJSONArray("keys"));
+        System.out.println(jObj.getJSONObject("temp").getJSONObject("arr1").getJSONArray("keys").getJSONObject(0).getString("test1"));
 
     }
 }
