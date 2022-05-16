@@ -10,5 +10,12 @@
   "TC_03": {
     "LockedUserName": "locked_out_user",
     "InValidPassword": "Test@123"
+  },
+  "TC_04": {
+    "ValidUserName": "standard_user",
+    "ValidPassword": "secret_sauce",
+    "FirstName": "abc",
+    "LastName": "xyz",
+    "zip": "123456"
   }
 }
