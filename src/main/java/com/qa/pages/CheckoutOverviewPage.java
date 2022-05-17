@@ -1,5 +1,6 @@
 package com.qa.pages;
 
+import com.qa.utils.Constants;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
@@ -24,14 +25,25 @@ public class CheckoutOverviewPage extends  MenuPage{
         return getText(sLBPLbl);
     }
 
-    public ProductsPage tapCancelBtn() {
+    public ProductsPage tapCancelBtn() throws InterruptedException {
+        ScrollToCancelBtn();
         tapOnElement(cancelBtn);
         return new ProductsPage();
     }
 
-    public CheckoutCompletePage tapFinishBtn() {
+    public CheckoutCompletePage tapFinishBtn() throws InterruptedException {
+         waitForEleVisibility(sLBPLbl);
+        ScrollToFinishBtn();
         tapOnElement(finishBtn);
         return new CheckoutCompletePage();
+    }
+
+    public void ScrollToFinishBtn()  {
+      iosScroll(String.valueOf(Constants.ScrollActions.down));
+    }
+
+    public void ScrollToCancelBtn(){
+
     }
 }
 
