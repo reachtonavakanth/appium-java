@@ -1,10 +1,7 @@
 package com.qa.base;
 
 import com.qa.utils.TestUtil;
-import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.FindsByAndroidUIAutomator;
-import io.appium.java_client.InteractsWithApps;
-import io.appium.java_client.MobileElement;
+import io.appium.java_client.*;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -23,14 +20,16 @@ import org.testng.annotations.BeforeTest;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class BaseClass extends TestUtil {
     protected static AppiumDriver driver;
-    protected static String env ;
+    protected static String env;
     public static String testDataFilePath;
     public static String stringsFilePath;
-    public BaseClass(){
-        PageFactory.initElements(new AppiumFieldDecorator(driver),this);
+
+    public BaseClass() {
+        PageFactory.initElements(new AppiumFieldDecorator(driver), this);
     }
 
     @BeforeTest
@@ -42,7 +41,7 @@ public class BaseClass extends TestUtil {
         try {
             if (env.equalsIgnoreCase("Android")) {
                 DesiredCapabilities caps = new DesiredCapabilities();
-                if(getKeyValue(propFilePath, "emulator").equalsIgnoreCase("Yes")){
+                if (getKeyValue(propFilePath, "emulator").equalsIgnoreCase("Yes")) {
                     caps.setCapability("avd", getKeyValue(propFilePath, "emulatorName"));
                     caps.setCapability("avdLaunchTimeout", 900000);
                 }
@@ -64,7 +63,7 @@ public class BaseClass extends TestUtil {
                 caps.setCapability(MobileCapabilityType.DEVICE_NAME, getKeyValue(propFilePath, "iosDeviceName"));
                 caps.setCapability(MobileCapabilityType.UDID, getKeyValue(propFilePath, "iosUdid"));
                 caps.setCapability("bundleId", getKeyValue(propFilePath, "iosBundleId"));
-              //  caps.setCapability(MobileCapabilityType.APP, getAppPath(getKeyValue(propFilePath, "iosAppName")));
+                //  caps.setCapability(MobileCapabilityType.APP, getAppPath(getKeyValue(propFilePath, "iosAppName")));
                 // caps.setCapability("ignoreHiddenApiPolicyError", true);
                 URL url = new URL(getKeyValue(propFilePath, "appiumURL"));
                 driver = new IOSDriver(url, caps);
@@ -76,8 +75,9 @@ public class BaseClass extends TestUtil {
 
     @AfterTest
     public void tearDown() {
-      //  driver.quit();
+        //  driver.quit();
     }
+
     public void closeApp() {
         ((InteractsWithApps) driver).closeApp();
     }
@@ -87,11 +87,10 @@ public class BaseClass extends TestUtil {
     }
 
     @AfterMethod
-    public void redirect(ITestResult result){
+    public void redirect(ITestResult result) {
         if (result.getStatus() == ITestResult.FAILURE) {
             System.out.println("Test is Fail"); //driver.installApp()
-        }
-        else if (result.getStatus() == ITestResult.SUCCESS) {
+        } else if (result.getStatus() == ITestResult.SUCCESS) {
             System.out.println("Test is Pass");
         }
         closeApp();
@@ -108,37 +107,39 @@ public class BaseClass extends TestUtil {
         wait.until(ExpectedConditions.visibilityOf(ele));
     }
 
-    public void tapOnElement(MobileElement ele){
+    public void tapOnElement(MobileElement ele) {
         waitForEleVisibility(ele);
         ele.click();
     }
 
-    public void clearElement(MobileElement ele){
+    public void clearElement(MobileElement ele) {
         waitForEleVisibility(ele);
         ele.clear();
     }
-    public void sendDataToElement(MobileElement ele,String value){
+
+    public void sendDataToElement(MobileElement ele, String value) {
         waitForEleVisibility(ele);
         clearElement(ele);
         ele.sendKeys(value);
     }
-    public String getAndroidElementAttribute(MobileElement ele, String attributeName){
+
+    public String getAndroidElementAttribute(MobileElement ele, String attributeName) {
         waitForEleVisibility(ele);
         return ele.getAttribute(attributeName);
     }
 
-    public String getIOSElementAttribute(MobileElement ele, String attributeName){
+    public String getIOSElementAttribute(MobileElement ele, String attributeName) {
         waitForEleVisibility(ele);
         return ele.getAttribute(attributeName);
     }
+
     // in iOS text attribute will not work hence using label attribute
-    public String getText(MobileElement ele){
-        String text= null;
-        if(env.equalsIgnoreCase("Android")){
-            text=  getAndroidElementAttribute(ele, "text");
-        }
-        else if(env.equalsIgnoreCase("iOS")){
-            text=  getIOSElementAttribute(ele,"label");
+    public String getText(MobileElement ele) {
+        String text = null;
+        if (env.equalsIgnoreCase("Android")) {
+            text = getAndroidElementAttribute(ele, "text");
+        } else if (env.equalsIgnoreCase("iOS")) {
+            text = getIOSElementAttribute(ele, "label");
         }
         return text;
     }
@@ -155,6 +156,7 @@ public class BaseClass extends TestUtil {
                 "new UiScrollable(new UiSelector()" + ".description(\"test-Inventory item page\")).scrollable(true)).scrollIntoView("
                         + "new UiSelector().description(\"test-Price\"));");
     }
+
     public MobileElement scrollToElement_Android2() {
         return (MobileElement) ((FindsByAndroidUIAutomator) driver).findElementByAndroidUIAutomator(
                 "new UiScrollable(new UiSelector()" + ".scrollable(true)).scrollIntoView("
@@ -162,34 +164,45 @@ public class BaseClass extends TestUtil {
     }
 
     // Scrollable element is identified by XCUIElementTypeScrollView tag
-    public void iOS_ScrollMethod1() {
-        RemoteWebElement parentElement = (RemoteWebElement)driver.findElement(By.className("XCUIElementTypeScrollView"));
+    public void iosScroll(String scrollType) {
+        RemoteWebElement parentElement = (RemoteWebElement) driver.findElement(By.className("XCUIElementTypeScrollView"));
         String parElementID = parentElement.getId();
         HashMap<String, String> scrollObject = new HashMap<String, String>();
         scrollObject.put("element", parElementID);
-        scrollObject.put("direction", "up");  // up down io iOS up down are in reverse way
+        scrollObject.put("direction", scrollType.toLowerCase(Locale.ROOT));
         driver.executeScript("mobile:scroll", scrollObject);
     }
+    // Scroll to particular element using below
+    // identificationType - class or id
+    // attributeType - label or name
+    // attributeValue - label value or name value
     // Scroll to particular element using predicateString
-    public void iOS_ScrollMethod2() {
-        RemoteWebElement parentElement = (RemoteWebElement)driver.findElement(By.className("XCUIElementTypeScrollView"));
-        String parElementID = parentElement.getId();
+
+    public void iosScroll(String identificationType, String attributeType, String attributeValue) {
         HashMap<String, String> scrollObject = new HashMap<String, String>();
-        scrollObject.put("element", parElementID);
-        scrollObject.put("predicateString", "label == 'ADD TO CART'");   // if label is available
-        // or
-       //  scrollObject.put("name", "test-ADD TO CART"); //If name is available
-        driver.executeScript("mobile:scroll", scrollObject);
+        switch (identificationType) {
+            case "class":
+                RemoteWebElement parentElement = (RemoteWebElement) driver.findElement(By.className("XCUIElementTypeScrollView")); // Parent tag
+                String parElementID = parentElement.getId();
+                scrollObject.put("element", parElementID);
+                if (attributeType.equalsIgnoreCase("label")) {
+                    scrollObject.put("predicateString", "label == '" + attributeValue + "'");
+                } else if (attributeType.equalsIgnoreCase("name")) {
+                    scrollObject.put("name", attributeValue);
+                }
+                driver.executeScript("mobile:scroll", scrollObject);
+                break;
+            case "id":
+                RemoteWebElement actualElement = (RemoteWebElement) driver.findElement(By.name(attributeValue));
+                String elementID = actualElement.getId();
+                scrollObject.put("element", elementID);
+                scrollObject.put("toVisible", "RandomText");
+                driver.executeScript("mobile:scroll", scrollObject);
+                break;
+        }
     }
 
-    // Scroll to particular element using id (accessibility id is available)
-
-    public void iOS_ScrollMethod3() {
-        RemoteWebElement actualElement = (RemoteWebElement)driver.findElement(By.name("test-ADD TO CART"));
-        String elementID = actualElement.getId();
-        HashMap<String, String> scrollObject = new HashMap<String, String>();
-        scrollObject.put("element", elementID);
-        scrollObject.put("toVisible", "Random Text");
-        driver.executeScript("mobile:scroll", scrollObject);
+    public void keyboardActions(String key) {
+        driver.findElement(MobileBy.AccessibilityId(key)).click();
     }
 }

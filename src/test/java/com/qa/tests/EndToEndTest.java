@@ -31,7 +31,7 @@ public class EndToEndTest extends BaseClass {
     }
 
     @Test
-    public void Tc_01() {
+    public void Tc_01() throws InterruptedException {
 
         try {
             jsonObjData = getJsonObject(testDataFilePath, "TC_04");

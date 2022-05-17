@@ -1,5 +1,6 @@
 package com.qa.pages;
 
+import com.qa.utils.Constants;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
@@ -36,6 +37,7 @@ public class CheckoutInformationPage extends MenuPage {
 
     public void inputZipCode(String zipcode) {
         sendDataToElement(zipCodeFld, zipcode);
+        keyboardActions(String.valueOf(Constants.KeyActions.Return));
     }
 
     public ProductsPage tapCancelBtn() {
