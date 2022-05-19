@@ -5,6 +5,7 @@ import com.qa.pages.LoginPage;
 import com.qa.pages.MenuPage;
 import com.qa.pages.ProductsPage;
 import com.qa.pages.SettingsPage;
+import com.qa.utils.TestUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.testng.Assert;
@@ -14,8 +15,6 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 
 public class LoginTest extends BaseClass {
-    JSONObject jsonObjData;
-    JSONArray jsonArrData;
     JSONObject jsonObjMsg;
     LoginPage loginPage;
     ProductsPage productsPage;
@@ -45,9 +44,11 @@ public class LoginTest extends BaseClass {
 
     @Test
     public void invalidLoginTest_01() {
+        JSONObject jsonObjData = null;
+        JSONArray jsonArrData = null;
         try {
-            jsonObjData = getJsonObject(testDataFilePath, "TC_01");
-            jsonObjMsg = getJsonObject(stringsFilePath, "LoginPage");
+            jsonObjData = new TestUtil().getJsonObject(getTestDataFilePath(), "TC_01");
+            jsonObjMsg = new TestUtil().getJsonObject(getStringsFileFilePath(), "LoginPage");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -63,9 +64,11 @@ public class LoginTest extends BaseClass {
 
     @Test
     public void validLoginTest_02() {
+        JSONObject jsonObjData = null;
+        JSONArray jsonArrData = null;
         try {
-            jsonObjData = getJsonObject(testDataFilePath, "TC_02");
-            jsonObjMsg = getJsonObject(stringsFilePath, "Products");
+            jsonObjData = new TestUtil().getJsonObject(getTestDataFilePath(), "TC_02");
+            jsonObjMsg = new TestUtil().getJsonObject(getStringsFileFilePath(), "Products");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -80,9 +83,11 @@ public class LoginTest extends BaseClass {
 
     @Test
     public void verifyLogout() {
+        JSONObject jsonObjData = null;
+        JSONArray jsonArrData = null;
         try {
-            jsonObjData = getJsonObject(testDataFilePath, "TC_02");
-            jsonObjMsg = getJsonObject(stringsFilePath, "Products");
+            jsonObjData = new TestUtil().getJsonObject(getTestDataFilePath(), "TC_02");
+            jsonObjMsg = new TestUtil().getJsonObject(getStringsFileFilePath(), "Products");
         } catch (IOException e) {
             e.printStackTrace();
         }
