@@ -2,6 +2,7 @@ package com.qa.tests;
 
 import com.qa.base.BaseClass;
 import com.qa.pages.*;
+import com.qa.utils.TestUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.testng.annotations.BeforeMethod;
@@ -20,9 +21,6 @@ public class EndToEndTest extends BaseClass {
     CheckoutInformationPage checkoutInformationPage;
     CheckoutOverviewPage checkoutOverviewPage;
     CheckoutCompletePage checkoutCompletePage;
-    JSONObject jsonObjData;
-    JSONArray jsonArrData;
-    JSONObject jsonObjMsg;
 
     @BeforeMethod
     public void objInit(Method m) {
@@ -33,15 +31,19 @@ public class EndToEndTest extends BaseClass {
     @Test
     public void Tc_01() throws InterruptedException {
 
+        JSONObject jsonObjData = null;
+        JSONObject jsonObjMsg = null;
         try {
-            jsonObjData = getJsonObject(testDataFilePath, "TC_04");
-            jsonObjMsg = getJsonObject(stringsFilePath, "LoginPage");
+             jsonObjData = new TestUtil().getJsonObject(getTestDataFilePath(), "TC_04");
+             jsonObjMsg = new TestUtil().getJsonObject(getStringsFileFilePath(), "LoginPage");
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+        new TestUtil().log("Before Login");
         productsPage = loginPage.successfulLogin(jsonObjData.getString("ValidUserName"),
                 jsonObjData.getString("ValidPassword"));
+        new TestUtil().log("Login Successful !");
         menuPage = productsPage.tapAddCartBtn();
         checkoutPage = menuPage.tapCartIConWithCount();
         checkoutPage.tapContinueShoppingBtn();

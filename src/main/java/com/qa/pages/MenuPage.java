@@ -6,14 +6,14 @@ import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class MenuPage extends BaseClass {
-    @AndroidFindBy(accessibility = "")
+    @AndroidFindBy(accessibility = "test-Menu")
     @iOSXCUITFindBy(id ="test-Menu")
     private MobileElement menuIcon;
 
-    @AndroidFindBy(accessibility = "")
+    @AndroidFindBy(accessibility = "test-Cart")
     @iOSXCUITFindBy(id ="test-Cart")
     private MobileElement cartIcon;
-    @AndroidFindBy(accessibility = "")
+    @AndroidFindBy(accessibility = " (//XCUIElementTypeOther[@name=\"1\"])[4]")
     @iOSXCUITFindBy(xpath =" (//XCUIElementTypeOther[@name=\"1\"])[4]")
     private MobileElement cartIconWithCount;
 

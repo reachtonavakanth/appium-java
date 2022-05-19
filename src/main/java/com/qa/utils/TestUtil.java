@@ -1,16 +1,21 @@
 package com.qa.utils;
 
+import com.qa.base.BaseClass;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Properties;
 
 public class TestUtil {
 
     protected Properties prop;
-    public long timeOut = 10;
 
     /*
      * @author: Navakanth Tunga
@@ -46,7 +51,7 @@ public class TestUtil {
      * @param: filepath - File Path for '.properties' file, key - Key for searching in '.properties' file,
      * Value - value to be updated in '.properties' file
      * */
-    protected void setCongigValue(String filepath, String key, String value) throws IOException {
+    public void setCongigValue(String filepath, String key, String value) throws IOException {
         Properties prop = new Properties();
         FileInputStream fis = null;
         FileOutputStream fos = null;
@@ -69,30 +74,7 @@ public class TestUtil {
 
     }
 
-    protected static String getMainResourcesPath(String fileName) {
-
-        String getMainResourcesPath = System.getProperty("user.dir") + File.separator + "src" +
-                File.separator + "main" + File.separator + "resources" +
-                File.separator + fileName;
-        return getMainResourcesPath;
-    }
-
-    protected static String getTestDataPath(String fileName) {
-
-        String getTestResourcesPath = System.getProperty("user.dir") + File.separator + "src" +
-                File.separator + "test" + File.separator + "resources" +File.separator + "testdata" +
-                File.separator + fileName;
-        return getTestResourcesPath;
-    }
-
-    protected static String getAppPath(String fileName) {
-        String appPath = System.getProperty("user.dir") + File.separator + "src" +
-                File.separator + "test" + File.separator + "resources" + File.separator + "app" +
-                File.separator + fileName;
-        return appPath;
-    }
-
-    protected String getJsonString(String path, String key) throws IOException {
+    public String getJsonString(String path, String key) throws IOException {
         InputStream inputstream = null;
         JSONObject jsonObj = null;
         try {
@@ -109,7 +91,7 @@ public class TestUtil {
         return jsonObj.getString(key);
     }
 
-    protected JSONObject getJsonObject(String path, String key) throws IOException {
+    public  JSONObject getJsonObject(String path, String key) throws IOException {
         InputStream inputstream = null;
         JSONObject jsonObj = null;
         try {
@@ -126,7 +108,7 @@ public class TestUtil {
         return jsonObj.getJSONObject(key);
     }
 
-    protected JSONArray getJsonArray(String path, String key) throws IOException {
+    public JSONArray getJsonArray(String path, String key) throws IOException {
         InputStream inputstream = null;
         JSONObject jsonObj = null;
         try {
@@ -141,6 +123,45 @@ public class TestUtil {
             }
         }
         return jsonObj.getJSONArray(key);
+    }
+
+    public String getDateTime() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
+
+
+    public void log(String txt) {
+        BaseClass base = new BaseClass();
+        String msg = Thread.currentThread().getId() + ":" + base.getPlatformName() + ":" + base.getDeviceName() + ":"
+                + Thread.currentThread().getStackTrace()[2].getClassName() + ":" + txt;
+
+        System.out.println(msg);
+
+        String strFile = "logs" + File.separator + base.getPlatformName() + "_" + base.getDeviceName()
+                + File.separator + base.getDateTime();
+
+        File logFile = new File(strFile);
+
+        if (!logFile.exists()) {
+            logFile.mkdirs();
+        }
+
+        FileWriter fileWriter = null;
+        try {
+            fileWriter = new FileWriter(logFile + File.separator + "log.txt",true);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        PrintWriter printWriter = new PrintWriter(fileWriter);
+        printWriter.println(msg);
+        printWriter.close();
+    }
+
+    public Logger log() {
+        return LogManager.getLogger(Thread.currentThread().getStackTrace()[2].getClassName());
     }
 }
 
