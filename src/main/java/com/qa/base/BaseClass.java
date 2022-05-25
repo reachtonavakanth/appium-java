@@ -4,9 +4,13 @@ import com.qa.utils.TestUtil;
 import io.appium.java_client.*;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
+import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.remote.MobileCapabilityType;
 import io.appium.java_client.screenrecording.CanRecordScreen;
+import io.appium.java_client.service.local.AppiumDriverLocalService;
+import io.appium.java_client.service.local.AppiumServiceBuilder;
+
 import org.apache.commons.codec.binary.Base64;
 import org.openqa.selenium.By;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -18,7 +22,10 @@ import org.testng.ITestResult;
 import org.testng.annotations.*;
 
 import java.io.*;
+import java.net.InetAddress;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -32,6 +39,7 @@ public class BaseClass{
     protected static ThreadLocal<String> deviceName = new ThreadLocal<String>();
     protected static ThreadLocal<String> testDataFilePath = new ThreadLocal<String>();
     protected static ThreadLocal<String> stringsFilePath = new ThreadLocal<String>();
+    public static AppiumDriverLocalService service;
     private static final long waitTimeOut = 10;
     TestUtil utils = new TestUtil();
 
@@ -92,8 +100,19 @@ public class BaseClass{
     }
 
     public BaseClass() {
-        PageFactory.initElements(new AppiumFieldDecorator(getDriver()), this);
+        PageFactory.initElements(new AppiumFieldDecorator(getDriver()), BaseClass.class);
     }
+
+    public AppiumDriverLocalService createAppiumService() {
+		//Build the Appium service
+		AppiumServiceBuilder serviceBuilder = new AppiumServiceBuilder();
+
+		service = AppiumDriverLocalService.buildService(serviceBuilder.usingAnyFreePort());
+		service.start();
+		System.out.println("Appium Server started successfully");
+		return service;
+
+	}
 
 
     @Parameters({"emulator", "platformName", "udid", "deviceName", "systemPort",
@@ -102,7 +121,7 @@ public class BaseClass{
     public void launchApp(@Optional("androidOnly") String emulator, String platformName, String udid, String deviceName,
                           @Optional("androidOnly") String systemPort, @Optional("androidOnly") String chromeDriverPort,
                           @Optional("iOSOnly") String wdaLocalPort, @Optional("iOSOnly") String webkitDebugProxyPort) throws IOException {
-
+        createAppiumService();
         String propFilePath = System.getProperty("user.dir") + File.separator + "src" +
                 File.separator + "main" + File.separator + "resources" +
                 File.separator + "appLaunch.properties";
@@ -152,7 +171,18 @@ public class BaseClass{
                 caps.setCapability("ignoreHiddenApiPolicyError", true);
                 caps.setCapability("systemPort", systemPort);
                 caps.setCapability("chromeDriverPort", chromeDriverPort);
-                driver = new AndroidDriver(url, caps);
+                caps.setCapability("noReset", true);
+                caps.setCapability("chromedriverExecutable",System.getProperty("user.dir")+File.separator+"src"+File.separator+"test"+File.separator+
+                        "resources"+File.separator+"drivers"+File.separator+"chromedriver.exe");
+
+               // driver = new AndroidDriver(url, caps);
+                try {
+        			driver = new AndroidDriver(new URL(service.getUrl().toString()), caps);
+
+        		} catch (MalformedURLException e) {
+        		          e.printStackTrace();
+        		}
+                
             } else if (platformName.equalsIgnoreCase("iOS")) {
                 caps.setCapability(MobileCapabilityType.AUTOMATION_NAME, props.getProperty("iosAutomationName"));
                 caps.setCapability("bundleId", props.getProperty("iosBundleId"));
@@ -171,7 +201,10 @@ public class BaseClass{
 
     @AfterTest
     public void tearDown() {
-        //  getDriver().quit();
+          getDriver().quit();
+ 
+    	if (service.isRunning() && service != null) 
+			service.stop();
     }
 
     @BeforeMethod

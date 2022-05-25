@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suite name="Suite" >
-    <!--    <test name="Pixel_3">
+       <test name="Pixel2_3">
         <listeners>
             <listener class-name="com.qa.listners.TestListeners" />
         </listeners>
         <parameter name="emulator" value="true" />
         <parameter name="platformName" value="Android" />
         <parameter name="platformVersion" value="11" />
-        <parameter name="udid" value="emulator-5554" />
-        <parameter name="deviceName" value="Pixel_3" />
+        <parameter name="udid" value="192.168.168.101:5555" />
+        <parameter name="deviceName" value="" />
+           <parameter name="systemPort" value="" />
+           <parameter name="chromeDriverPort" value="" />
         <classes>
-            <class name="com.qa.tests.LoginTest"/>
-            <class name="com.qa.tests.EndToEndTest"/>
+            <class name="com.qa.tests.WebViewTest"/>
         </classes>
-    </test> -->
+    </test>
     <!--  <test name="iPhone13">
         <listeners>
             <listener class-name="com.qa.listners.TestListeners"/>
@@ -28,7 +29,7 @@
             <class name="com.qa.tests.EndToEndTest"/>
         </classes>
     </test>-->
-
+<!--
     <test name="iPhone12">
         <listeners>
             <listener class-name="com.qa.listners.TestListeners"/>
@@ -42,5 +43,5 @@
             <class name="com.qa.tests.LoginTest"/>
             <class name="com.qa.tests.EndToEndTest"/>
         </classes>
-    </test>
+    </test>-->
 </suite> <!-- Suite -->
