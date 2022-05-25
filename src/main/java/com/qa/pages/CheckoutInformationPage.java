@@ -7,23 +7,23 @@ import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class CheckoutInformationPage extends MenuPage {
 
-    @AndroidFindBy(accessibility = "")
+    @AndroidFindBy(accessibility = "test-First Name")
     @iOSXCUITFindBy(id = "test-First Name")
     private MobileElement firstNameTxtFld;
 
-    @AndroidFindBy(accessibility = "")
+    @AndroidFindBy(accessibility = "test-Last Name")
     @iOSXCUITFindBy(id = "test-Last Name")
     private MobileElement lastNameFld;
 
-    @AndroidFindBy(accessibility = "")
+    @AndroidFindBy(accessibility = "test-Zip/Postal Code")
     @iOSXCUITFindBy(id = "test-Zip/Postal Code")
     private MobileElement zipCodeFld;
 
-    @AndroidFindBy(accessibility = "")
+    @AndroidFindBy(accessibility = "test-CANCEL")
     @iOSXCUITFindBy(id = "test-CANCEL")
     private MobileElement cancelBtn;
 
-    @AndroidFindBy(accessibility = "")
+    @AndroidFindBy(accessibility = "test-CONTINUE")
     @iOSXCUITFindBy(id = "test-CONTINUE")
     private MobileElement continueBtn;
 
@@ -37,7 +37,12 @@ public class CheckoutInformationPage extends MenuPage {
 
     public void inputZipCode(String zipcode) {
         sendDataToElement(zipCodeFld, zipcode);
+        if(getPlatformName().equalsIgnoreCase("iOS")){
         keyboardActions(String.valueOf(Constants.KeyActions.Return));
+    }else
+        if(getPlatformName().equalsIgnoreCase("iOS")){
+            getDriver().hideKeyboard();
+        }
     }
 
     public ProductsPage tapCancelBtn() {

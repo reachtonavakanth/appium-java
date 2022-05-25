@@ -24,7 +24,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
-public class BaseClass{
+public class BaseClass {
     protected static ThreadLocal<AppiumDriver> driver = new ThreadLocal<AppiumDriver>();
     protected static ThreadLocal<Properties> props = new ThreadLocal<Properties>();
     protected static ThreadLocal<String> platformName = new ThreadLocal<String>();
@@ -32,7 +32,7 @@ public class BaseClass{
     protected static ThreadLocal<String> deviceName = new ThreadLocal<String>();
     protected static ThreadLocal<String> testDataFilePath = new ThreadLocal<String>();
     protected static ThreadLocal<String> stringsFilePath = new ThreadLocal<String>();
-    private static final long waitTimeOut = 10;
+    private static final long waitTimeOut = 30;
     TestUtil utils = new TestUtil();
 
     public AppiumDriver getDriver() {
@@ -146,19 +146,20 @@ public class BaseClass{
                 }
                 caps.setCapability(MobileCapabilityType.AUTOMATION_NAME, props.getProperty("androidAutomationName"));
                 //caps.setCapability(MobileCapabilityType.PLATFORM_VERSION, platformVersion);
-             //   caps.setCapability(MobileCapabilityType.APP, appPath + props.getProperty("androidAppName"));
+                caps.setCapability(MobileCapabilityType.APP, appPath + props.getProperty("androidAppName"));
                 caps.setCapability("appPackage", props.getProperty("androidAppPackage"));
                 caps.setCapability("appActivity", props.getProperty("androidAppActivity"));
                 caps.setCapability("ignoreHiddenApiPolicyError", true);
                 caps.setCapability("systemPort", systemPort);
                 caps.setCapability("chromeDriverPort", chromeDriverPort);
+                // caps.setCapability("--session-override",true);
                 driver = new AndroidDriver(url, caps);
             } else if (platformName.equalsIgnoreCase("iOS")) {
                 caps.setCapability(MobileCapabilityType.AUTOMATION_NAME, props.getProperty("iosAutomationName"));
                 caps.setCapability("bundleId", props.getProperty("iosBundleId"));
                 caps.setCapability("wdaLocalPort", wdaLocalPort);
                 caps.setCapability("webkitDebugProxyPort", webkitDebugProxyPort);
-               // caps.setCapability(MobileCapabilityType.APP, appPath + props.getProperty("iosAppName"));
+                // caps.setCapability(MobileCapabilityType.APP, appPath + props.getProperty("iosAppName"));
                 driver = new IOSDriver(url, caps);
             }
 
@@ -171,7 +172,7 @@ public class BaseClass{
 
     @AfterTest
     public void tearDown() {
-        //  getDriver().quit();
+        getDriver().quit();
     }
 
     @BeforeMethod
@@ -192,6 +193,7 @@ public class BaseClass{
         closeApp();
         launchAppAgain();
     }
+
     public void closeApp() {
         ((InteractsWithApps) getDriver()).closeApp();
     }
@@ -199,6 +201,7 @@ public class BaseClass{
     public void launchAppAgain() {
         ((InteractsWithApps) getDriver()).launchApp();
     }
+
     public void waitForEleVisibility(MobileElement ele) {
 
         WebDriverWait wait = new WebDriverWait(getDriver(), waitTimeOut);
@@ -208,6 +211,11 @@ public class BaseClass{
     public void waitForEleVisibility(MobileElement ele, Long time) {
         WebDriverWait wait = new WebDriverWait(getDriver(), time);
         wait.until(ExpectedConditions.visibilityOf(ele));
+    }
+
+    public void waitForEleClickable(MobileElement ele, Long time) {
+        WebDriverWait wait = new WebDriverWait(getDriver(), time);
+        wait.until(ExpectedConditions.elementToBeClickable(ele));
     }
 
     public void tapOnElement(MobileElement ele) {
@@ -256,14 +264,14 @@ public class BaseClass{
 
     public MobileElement scrollToElement_Android1() {
         return (MobileElement) ((FindsByAndroidUIAutomator) getDriver()).findElementByAndroidUIAutomator(
-                "new UiScrollable(new UiSelector()" + ".description(\"test-Inventory item page\")).scrollable(true)).scrollIntoView("
-                        + "new UiSelector().description(\"test-Price\"));");
-    }
+                "new UiScrollable(new UiSelector()" + ".description(\"test-Item\")).scrollable(true)).scrollIntoView("
+                        + "new UiSelector().description(\"test-FINISH\"));");
+    } // CHECKOUT: OVERVIEW
 
-    public MobileElement scrollToElement_Android2() {
+    public MobileElement scrollToElement_Android2(String value) {
         return (MobileElement) ((FindsByAndroidUIAutomator) getDriver()).findElementByAndroidUIAutomator(
                 "new UiScrollable(new UiSelector()" + ".scrollable(true)).scrollIntoView("
-                        + "new UiSelector().description(\"test-Price\"));");
+                        + "new UiSelector().description(" + value + "));");
     }
 
     // Scrollable element is identified by XCUIElementTypeScrollView tag

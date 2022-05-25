@@ -13,7 +13,7 @@ public class MenuPage extends BaseClass {
     @AndroidFindBy(accessibility = "test-Cart")
     @iOSXCUITFindBy(id ="test-Cart")
     private MobileElement cartIcon;
-    @AndroidFindBy(accessibility = " (//XCUIElementTypeOther[@name=\"1\"])[4]")
+    @AndroidFindBy(xpath = "//android.view.ViewGroup[@content-desc=\"test-Cart\"]//android.widget.TextView")
     @iOSXCUITFindBy(xpath =" (//XCUIElementTypeOther[@name=\"1\"])[4]")
     private MobileElement cartIconWithCount;
 
@@ -22,7 +22,9 @@ public class MenuPage extends BaseClass {
        tapOnElement(menuIcon);
        return new SettingsPage();
     }
-    public CheckoutPage tapCartIConWithCount() {
+    public CheckoutPage tapCartIConWithCount() throws InterruptedException {
+         long time = 100;
+        waitForEleClickable(new ProductsPage().getRemoveBtn(),time);
         tapOnElement(cartIconWithCount);
         return new CheckoutPage();
     }

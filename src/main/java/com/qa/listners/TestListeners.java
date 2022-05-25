@@ -4,10 +4,13 @@ import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.Status;
 import com.qa.base.BaseClass;
 import com.qa.reports.MyExtentReport;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
+import org.testng.Reporter;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,33 +19,23 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.codec.binary.Base64;
-import org.testng.Reporter;
-
-
 public class TestListeners implements ITestListener {
     @Override
     public void onTestStart(ITestResult result) {
         BaseClass base = new BaseClass();
         try {
             MyExtentReport.startTest(result.getName(), result.getMethod().getDescription())
-                    .assignCategory(base.getPlatformName() + "_" + base.getDeviceName())
-                    .assignDevice(base.getDeviceName())
+                     .assignCategory(base.getPlatformName())
+                     .assignDevice(base.getDeviceName())
                     .assignAuthor("Automation Team");
         } catch (IOException e) {
             e.printStackTrace();
-            try {
-                throw e;
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
         }
     }
 
     @Override
     public void onTestSuccess(ITestResult result) {
-        MyExtentReport.getTest().log(Status.PASS, "Test Passed");    }
+        MyExtentReport.getTest().log(Status.PASS, "Test Passed !!!");    }
 
     @Override
     public void onTestFailure(ITestResult result) {
@@ -84,8 +77,8 @@ public class TestListeners implements ITestListener {
         }
         MyExtentReport.getTest().fail("Test Failed",
                 MediaEntityBuilder.createScreenCaptureFromPath(completeImagePath).build());
-        //MyExtentReport.getTest().fail("Test Failed",
-             //   MediaEntityBuilder.createScreenCaptureFromBase64String(new String(encoded, StandardCharsets.US_ASCII)).build());
+        MyExtentReport.getTest().fail("Test Failed",
+             MediaEntityBuilder.createScreenCaptureFromBase64String(new String(encoded, StandardCharsets.US_ASCII)).build());
         MyExtentReport.getTest().fail(result.getThrowable());
     }
 

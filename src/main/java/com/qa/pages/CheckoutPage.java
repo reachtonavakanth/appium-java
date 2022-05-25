@@ -5,11 +5,11 @@ import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class CheckoutPage extends MenuPage {
-    @AndroidFindBy(accessibility = "")
+    @AndroidFindBy(accessibility = "test-CONTINUE SHOPPING")
     @iOSXCUITFindBy(id ="test-CONTINUE SHOPPING")
     private MobileElement continueShoppingBtn;
 
-    @AndroidFindBy(accessibility = "")
+    @AndroidFindBy(accessibility = "test-CHECKOUT")
     @iOSXCUITFindBy(id ="test-CHECKOUT")
     private MobileElement checkoutBtn;
 

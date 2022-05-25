@@ -1,32 +1,37 @@
 package com.qa.reports;
 
+
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.JsonFormatter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
+import com.qa.base.BaseClass;
+import com.qa.utils.TestUtil;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class MyExtentReport {
     static ExtentReports extent;
-    final static String filePath = "Extent.html";
+    final static String filePath = "Report";
     static Map<Integer, ExtentTest> extentTestMap = new HashMap();
 
     public synchronized static ExtentReports getReporter() throws IOException {
+        BaseClass base = new BaseClass();
+        String reportDir = "HTMLReports" + File.separator + filePath+"_"+base.getDateTime()+".html" ;
         if (extent == null) {
-            ExtentSparkReporter sparktHtml = new ExtentSparkReporter(filePath);
-            JsonFormatter json = new JsonFormatter("extent.json");
+            extent = new ExtentReports();
+            ExtentSparkReporter sparktHtml = new ExtentSparkReporter(reportDir);
+        //  JsonFormatter json = new JsonFormatter("extent.json");
             sparktHtml.config().setDocumentTitle("Automation Execution Report");
             sparktHtml.config().setReportName("Automation TEAM");
             sparktHtml.config().setTheme(Theme.DARK);
-            extent.createDomainFromJsonArchive("extent.json");
-            extent = new ExtentReports();
-            extent.attachReporter(json,sparktHtml);
+            //extent.createDomainFromJsonArchive("extent.json");
+            extent.attachReporter(sparktHtml);
         }
-
         return extent;
     }
 

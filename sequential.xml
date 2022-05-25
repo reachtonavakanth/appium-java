@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<suite name="Suite" >
-    <!--    <test name="Pixel_3">
+<suite name="Suite">
+    <test name="Pixel_3">
         <listeners>
-            <listener class-name="com.qa.listners.TestListeners" />
+            <listener class-name="com.qa.listners.TestListeners"/>
         </listeners>
-        <parameter name="emulator" value="true" />
-        <parameter name="platformName" value="Android" />
-        <parameter name="platformVersion" value="11" />
-        <parameter name="udid" value="emulator-5554" />
-        <parameter name="deviceName" value="Pixel_3" />
+        <parameter name="emulator" value="false"/>
+        <parameter name="platformName" value="Android"/>
+        <parameter name="platformVersion" value="12"/>
+        <parameter name="udid" value="emulator-5554"/>
+        <parameter name="deviceName" value="Pixel_3"/>
+        <parameter name="systemPort" value="10000" />
+        <parameter name="chromeDriverPort" value="11000" />
         <classes>
-            <class name="com.qa.tests.LoginTest"/>
+        <!---    <class name="com.qa.tests.LoginTest"/> -->
             <class name="com.qa.tests.EndToEndTest"/>
         </classes>
-    </test> -->
+    </test>
+    -->
     <!--  <test name="iPhone13">
         <listeners>
             <listener class-name="com.qa.listners.TestListeners"/>
@@ -29,18 +32,18 @@
         </classes>
     </test>-->
 
-    <test name="iPhone12">
-        <listeners>
-            <listener class-name="com.qa.listners.TestListeners"/>
-        </listeners>
-        <parameter name="platformName" value="iOS"/>
-        <parameter name="udid" value="9053B43B-962F-4407-8D09-C6161E195CBD"/>
-        <parameter name="deviceName" value="iPhone 12"/>
-        <parameter name="wdaLocalPort" value="10001"/>
-        <parameter name="webkitDebugProxyPort" value="11001"/>
-        <classes>
-            <class name="com.qa.tests.LoginTest"/>
-            <class name="com.qa.tests.EndToEndTest"/>
-        </classes>
-    </test>
+    <!--  <test name="iPhone12">
+       <listeners>
+           <listener class-name="com.qa.listners.TestListeners"/>
+       </listeners>
+       <parameter name="platformName" value="iOS"/>
+       <parameter name="udid" value="9053B43B-962F-4407-8D09-C6161E195CBD"/>
+       <parameter name="deviceName" value="iPhone 12"/>
+       <parameter name="wdaLocalPort" value="10001"/>
+       <parameter name="webkitDebugProxyPort" value="11001"/>
+       <classes>
+           <class name="com.qa.tests.LoginTest"/>
+           <class name="com.qa.tests.EndToEndTest"/>
+       </classes>
+   </test>-->
 </suite> <!-- Suite -->
