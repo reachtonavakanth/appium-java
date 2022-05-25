@@ -6,11 +6,11 @@ import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class CheckoutCompletePage extends MenuPage {
 
-    @AndroidFindBy(accessibility = "")
+    @AndroidFindBy(accessibility = "THANK YOU FOR YOU ORDER")
     @iOSXCUITFindBy(id = "THANK YOU FOR YOU ORDER")
     private MobileElement confirmationLbl;
 
-    @AndroidFindBy(accessibility = "")
+    @AndroidFindBy(accessibility = "test-BACK HOME")
     @iOSXCUITFindBy(id = "test-BACK HOME")
     private MobileElement backHomeBtn;
 

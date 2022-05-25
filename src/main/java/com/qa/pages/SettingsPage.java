@@ -6,7 +6,7 @@ import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class SettingsPage extends BaseClass {
-    @AndroidFindBy(accessibility = "")
+    @AndroidFindBy(accessibility = "test-LOGOUT")
     @iOSXCUITFindBy(id = "test-LOGOUT")
     private MobileElement logoutText;
 

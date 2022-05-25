@@ -6,11 +6,11 @@ import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class CartPage extends MenuPage {
-    @AndroidFindBy(accessibility = "")
+    @AndroidFindBy(accessibility = "test-Menu")
     @iOSXCUITFindBy(id ="test-Menu")
     private MobileElement menuIcon;
 
-    @AndroidFindBy(accessibility = "")
+    @AndroidFindBy(accessibility = "test-Cart")
     @iOSXCUITFindBy(id ="test-Cart")
     private MobileElement cartIcon;
 
