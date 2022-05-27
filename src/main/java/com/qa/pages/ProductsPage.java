@@ -11,15 +11,17 @@ public class ProductsPage extends MenuPage {
     @iOSXCUITFindBy(xpath ="//XCUIElementTypeStaticText[@name=\"PRODUCTS\"]")
     private MobileElement productsLabel;
 
-    @AndroidFindBy(xpath = "(//XCUIElementTypeOther[@name=\"test-ADD TO CART\"])[1]")
+    @AndroidFindBy(xpath = "(//android.view.ViewGroup[@content-desc=\"test-ADD TO CART\"])[1]/android.widget.TextView")
     @iOSXCUITFindBy(xpath ="(//XCUIElementTypeOther[@name=\"test-ADD TO CART\"])[1]")
     private MobileElement sLBPAddCartBtn;
 
-    @AndroidFindBy(xpath = "test-REMOVE")
-    @iOSXCUITFindBy(xpath ="test-REMOVE")
+    @AndroidFindBy(accessibility = "test-REMOVE")
+    @iOSXCUITFindBy(id ="test-REMOVE")
     private MobileElement removeBtn;
 
-
+public MobileElement getRemoveBtn(){
+    return removeBtn;
+}
     public String getPageTitle() {
         return getText(productsLabel);
     }

@@ -1,32 +1,41 @@
 package com.qa.listners;
 
+import com.aventstack.extentreports.MediaEntityBuilder;
+import com.aventstack.extentreports.Status;
 import com.qa.base.BaseClass;
+import com.qa.reports.MyExtentReport;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
+import org.testng.Reporter;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.codec.binary.Base64;
-import org.testng.Reporter;
-
 
 public class TestListeners implements ITestListener {
     @Override
     public void onTestStart(ITestResult result) {
-        // ITestListener.super.onTestStart(result);
+        BaseClass base = new BaseClass();
+        try {
+            MyExtentReport.startTest(result.getName(), result.getMethod().getDescription())
+                     .assignCategory(base.getPlatformName())
+                     .assignDevice(base.getDeviceName())
+                    .assignAuthor("Automation Team");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onTestSuccess(ITestResult result) {
-        // ITestListener.super.onTestSuccess(result);
-    }
+        MyExtentReport.getTest().log(Status.PASS, "Test Passed !!!");    }
 
     @Override
     public void onTestFailure(ITestResult result) {
@@ -66,11 +75,16 @@ public class TestListeners implements ITestListener {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        MyExtentReport.getTest().fail("Test Failed",
+                MediaEntityBuilder.createScreenCaptureFromPath(completeImagePath).build());
+        MyExtentReport.getTest().fail("Test Failed",
+             MediaEntityBuilder.createScreenCaptureFromBase64String(new String(encoded, StandardCharsets.US_ASCII)).build());
+        MyExtentReport.getTest().fail(result.getThrowable());
     }
 
     @Override
     public void onTestSkipped(ITestResult result) {
-        // ITestListener.super.onTestSkipped(result);
+        MyExtentReport.getTest().log(Status.SKIP, "Test Skipped");
     }
 
     @Override
@@ -90,6 +104,10 @@ public class TestListeners implements ITestListener {
 
     @Override
     public void onFinish(ITestContext context) {
-        //ITestListener.super.onFinish(context);
+        try {
+            MyExtentReport.getReporter().flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
