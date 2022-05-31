@@ -40,7 +40,7 @@ public class ScrollTest extends BaseClass {
        // rbHomePage.selectDestination();
        // rbHomePage.selectTomorrow();
         rbHomePage.selectSearch();
-        rbHomePage.selectTravels("Asian Xpress");
+        rbHomePage.selectTravels("Geepee travels");
 
     }
 

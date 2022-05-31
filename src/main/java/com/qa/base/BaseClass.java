@@ -256,6 +256,8 @@ public class BaseClass {
         wait.until(ExpectedConditions.visibilityOf(ele));
     }
 
+
+
     public void waitForEleClickable(MobileElement ele, Long time) {
         WebDriverWait wait = new WebDriverWait(getDriver(), time);
         wait.until(ExpectedConditions.elementToBeClickable(ele));
@@ -317,6 +319,12 @@ public class BaseClass {
                         + "new UiSelector().description(" + value + "));");
     }
 
+    public void scrollTillText(String text){
+        ((AndroidDriver<MobileElement>)getDriver()).findElementByAndroidUIAutomator("new UiScrollable(new" +
+                "UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().text(\""+text+"\").instance(0))");
+
+    }
+
     public boolean elementPresent(AppiumDriver driver, By element, int time) {
         boolean elementPresentFlag = false;
         try {
@@ -324,7 +332,7 @@ public class BaseClass {
             for (int i = 0; i < time; i++) {
                 try {
                     MobileElement we = null;
-                    if (driver.findElement(element)!= null) {
+                    if ((we=(MobileElement) getDriver().findElement(element))!= null) {
                         elementPresentFlag = true;
                         break;
                     }
@@ -360,16 +368,17 @@ public class BaseClass {
             Dimension windowSize = driver.manage().window().getSize();
             int height = windowSize.height;
             int width = windowSize.width;
-            int startY = (int) (height * 0.5);
-            int endY = (int) (height * 0.7);
+            int startY = (int) (height * 0.80);
+            int endY = (int) (height * 0.20);
             int startX = (int) (width/2);
 
             System.out.println(startX+" "+startY+" "+startX+" "+endY);
             TouchAction ta = new TouchAction(driver);
             try {
                 ta.press(PointOption.point(startX, startY))
+                        .waitAction(WaitOptions.waitOptions(Duration.ofMillis(1000)))
                         .moveTo(PointOption.point(startX, endY))
-                        .waitAction(WaitOptions.waitOptions(Duration.ofMillis(9))).release().perform();
+                        .release().perform();
 
 
             } catch (Exception e) {

@@ -112,10 +112,11 @@ public class RedbusHomePage extends BaseClass {
     }
 
     public RedbusHomePage selectTravels(String travels) {
-
-                   swipeDownToElement(getDriver(),By.id("//android.widget.TextView[@text='"+travels+"]"));
-
-
+                 // MobileElement travelValue = (MobileElement) getDriver().findElement(By.xpath("in.redbus.android:id/search_button"))
+                   //swipeDownToElement(getDriver(),By.xpath("//android.widget.TextView[@text='"+travels+"']"));
+                   scrollTillText(travels);
+                   tapOnElement((MobileElement) getDriver().findElement(By.xpath("//android.widget.TextView[@text='"+travels+"']")));
+                   waitFor(10000);
         return this;
     }
 

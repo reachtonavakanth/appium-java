@@ -10,8 +10,8 @@
         <parameter name="emulator" value="false"/>
         <parameter name="platformName" value="Android"/>
         <parameter name="platformVersion" value="12"/>
-        <parameter name="udid" value="192.168.168.101:5555"/>
-        <parameter name="deviceName" value="192.168.168.101:5555"/>
+        <parameter name="udid" value="192.168.168.103:5555"/>
+        <parameter name="deviceName" value="192.168.168.103:5555"/>
         <parameter name="systemPort" value="10000" />
         <parameter name="chromeDriverPort" value="11000" />
         <classes>
