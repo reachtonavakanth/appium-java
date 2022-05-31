@@ -131,11 +131,7 @@ public class BaseClass {
         if (!logFile.exists()) {
             logFile.mkdirs();
         }
-
         ThreadContext.put("ROUTINGKEY", strFile);
-        System.out.println("ROUTINGKEY" + strFile);
-        utils.log().info("log path: " + strFile);
-
         setDateTime(utils.getDateTime());
         setPlatformName(platformName);
         setDeviceName(deviceName);

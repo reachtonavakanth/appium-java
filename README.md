@@ -2,10 +2,27 @@
 
 In this POC below test cases are automated in Android and iOS platforms. Mobile app used for testing is SauceLab's demo mobile application.
 
-# Test Cases
+# Simple Test Cases
 1. Verify login with Invalid Credentials
-2. Verify login with Credentials and verify 'Products' Label
-3. Verify whether user can place an order for a product
+   1. Launch the app
+   2. Enter invalid username
+   3. Enter invalid password
+   4. Tap on Login button
+   5. Verify the Error message
+2. Verify login with Credentials
+   1. Launch the app
+   2. Enter valid username
+   3. Enter valid password
+   4. Verify 'Products' Label in Products screen
+3. Verify logout
+   1. Launch the app
+   2. Enter valid user name
+   3. Enter valid password
+   4. Click on Menu icon
+   5. Click on logout button
+   6. Verify username text field in login screen
+# End - End Test Case
+4. Verify whether user can place an order for a product
    1. Login to application
    2. Tap on 'Add To Cart' button in 'Sauce Labs Backpack' product
    3. Verify whether 'Remove' button is displayed
@@ -17,16 +34,13 @@ In this POC below test cases are automated in Android and iOS platforms. Mobile 
    9. Input Last Name
    10. Input ZIP/PostalCode
    11. Tap on 'Continue' button
-   12. Tap on 'FINISH' and verify Message
-   13. Tap on 'BACK HOME'
-4. Verify Cancel order in Check Out Screen
-5. Verify Cancel order in Checkout Overview Screen
-6. Verify Logout Functionality
-
-
+   12. Scroll to 'Finish' button
+   13. Tap on 'FINISH' and verify Message
+   14. Tap on 'BACK HOME'
+   
 # Important Tools
 1. Appium used as Automation tool.
-2. Hybrid framework is developed in Java program language.
+2. Hybrid framework developed in Java program language.
 
 
 # Mobile App Reference

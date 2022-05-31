@@ -34,8 +34,8 @@ public class EndToEndTest extends BaseClass {
         JSONObject jsonObjData = null;
         JSONObject jsonObjMsg = null;
         try {
-             jsonObjData = new TestUtil().getJsonObject(getTestDataFilePath(), "TC_04");
-             jsonObjMsg = new TestUtil().getJsonObject(getStringsFileFilePath(), "LoginPage");
+            jsonObjData = new TestUtil().getJsonObject(getTestDataFilePath(), "TC_04");
+            jsonObjMsg = new TestUtil().getJsonObject(getStringsFileFilePath(), "LoginPage");
 
         } catch (IOException e) {
             e.printStackTrace();
