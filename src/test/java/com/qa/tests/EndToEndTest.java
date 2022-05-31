@@ -34,16 +34,16 @@ public class EndToEndTest extends BaseClass {
         JSONObject jsonObjData = null;
         JSONObject jsonObjMsg = null;
         try {
-             jsonObjData = new TestUtil().getJsonObject(getTestDataFilePath(), "TC_04");
-             jsonObjMsg = new TestUtil().getJsonObject(getStringsFileFilePath(), "LoginPage");
+            jsonObjData = new TestUtil().getJsonObject(getTestDataFilePath(), "TC_04");
+            jsonObjMsg = new TestUtil().getJsonObject(getStringsFileFilePath(), "LoginPage");
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        new TestUtil().log("Before Login");
+
         productsPage = loginPage.successfulLogin(jsonObjData.getString("ValidUserName"),
                 jsonObjData.getString("ValidPassword"));
-        new TestUtil().log("Login Successful !");
+        new TestUtil().log().info("Login Successful !");
         menuPage = productsPage.tapAddCartBtn();
         checkoutPage = menuPage.tapCartIConWithCount();
         checkoutPage.tapContinueShoppingBtn();

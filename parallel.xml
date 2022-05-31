@@ -25,7 +25,7 @@
         <parameter name="webkitDebugProxyPort" value="11000"/>
         <classes>
             <class name="com.qa.tests.LoginTest"/>
-            <!--   <class name="com.qa.tests.EndToEndTest"/> -->
+         <class name="com.qa.tests.EndToEndTest"/>
         </classes>
     </test>
 
@@ -40,7 +40,7 @@
         <parameter name="webkitDebugProxyPort" value="11001"/>
         <classes>
             <class name="com.qa.tests.LoginTest"/>
-         <!--   <class name="com.qa.tests.EndToEndTest"/> -->
+        <class name="com.qa.tests.EndToEndTest"/>
         </classes>
     </test>
 </suite> <!-- Suite -->

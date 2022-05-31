@@ -1,8 +1,8 @@
 package com.qa.utils;
 
-import com.qa.base.BaseClass;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.ThreadContext;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -15,8 +15,6 @@ import java.util.Properties;
 
 public class TestUtil {
 
-    protected Properties prop;
-
     /*
      * @author: Navakanth Tunga
      * @description: To read data from '.properties' file based on Key
@@ -24,7 +22,7 @@ public class TestUtil {
      * @return: returns string Value if key matches
      * */
     protected String getKeyValue(String filepath, String key) throws IOException {
-        prop = new Properties();
+        Properties prop = new Properties();
         String value = null;
         InputStream input = null;
         try {
@@ -91,7 +89,7 @@ public class TestUtil {
         return jsonObj.getString(key);
     }
 
-    public  JSONObject getJsonObject(String path, String key) throws IOException {
+    public JSONObject getJsonObject(String path, String key) throws IOException {
         InputStream inputstream = null;
         JSONObject jsonObj = null;
         try {
@@ -132,34 +130,34 @@ public class TestUtil {
     }
 
 
-    public void log(String txt) {
-        BaseClass base = new BaseClass();
-        String msg = Thread.currentThread().getId() + ":" + base.getPlatformName() + ":" + base.getDeviceName() + ":"
-                + Thread.currentThread().getStackTrace()[2].getClassName() + ":" + txt;
+    /* public void log(String txt) {
+         BaseClass base = new BaseClass();
+         String msg = Thread.currentThread().getId() + ":" + base.getPlatformName() + ":" + base.getDeviceName() + ":"
+                 + Thread.currentThread().getStackTrace()[2].getClassName() + ":" + txt;
 
-        System.out.println(msg);
+         System.out.println(msg);
 
-        String strFile = "logs" + File.separator + base.getPlatformName() + "_" + base.getDeviceName()
-                + File.separator + base.getDateTime();
+         String strFile = "logs" + File.separator + base.getPlatformName() + "_" + base.getDeviceName()
+                 + File.separator + base.getDateTime();
 
-        File logFile = new File(strFile);
+         File logFile = new File(strFile);
 
-        if (!logFile.exists()) {
-            logFile.mkdirs();
-        }
+         if (!logFile.exists()) {
+             logFile.mkdirs();
+         }
 
-        FileWriter fileWriter = null;
-        try {
-            fileWriter = new FileWriter(logFile + File.separator + "log.txt",true);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        PrintWriter printWriter = new PrintWriter(fileWriter);
-        printWriter.println(msg);
-        printWriter.close();
-    }
-
+         FileWriter fileWriter = null;
+         try {
+             fileWriter = new FileWriter(logFile + File.separator + "log.txt",true);
+         } catch (IOException e) {
+             // TODO Auto-generated catch block
+             e.printStackTrace();
+         }
+         PrintWriter printWriter = new PrintWriter(fileWriter);
+         printWriter.println(msg);
+         printWriter.close();
+         return LogManager.getLogger(Thread.currentThread().getStackTrace()[2].getClassName());
+     }*/
     public Logger log() {
         return LogManager.getLogger(Thread.currentThread().getStackTrace()[2].getClassName());
     }

@@ -1,5 +1,7 @@
 package com.qa.base;
 
+import com.aventstack.extentreports.Status;
+import com.qa.reports.MyExtentReport;
 import com.qa.utils.TestUtil;
 import io.appium.java_client.*;
 import io.appium.java_client.android.AndroidDriver;
@@ -8,6 +10,8 @@ import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.remote.MobileCapabilityType;
 import io.appium.java_client.screenrecording.CanRecordScreen;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.ThreadContext;
 import org.openqa.selenium.By;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebElement;
@@ -122,7 +126,12 @@ public class BaseClass {
         Properties props = new Properties();
         props.load(inputStream);
 
-
+        String strFile = "logs" + File.separator + platformName + "_" + deviceName;
+        File logFile = new File(strFile);
+        if (!logFile.exists()) {
+            logFile.mkdirs();
+        }
+        ThreadContext.put("ROUTINGKEY", strFile);
         setDateTime(utils.getDateTime());
         setPlatformName(platformName);
         setDeviceName(deviceName);
@@ -162,12 +171,18 @@ public class BaseClass {
                 // caps.setCapability(MobileCapabilityType.APP, appPath + props.getProperty("iosAppName"));
                 driver = new IOSDriver(url, caps);
             }
-
+          //  utils.log().info(getPlatformName() + " driver is Initialized !!");
         } catch (Exception e) {
+            utils.log().error(getPlatformName() + " driver initialization Failed");
             e.printStackTrace();
         }
         setDriver(driver);
-        utils.log().info("driver initialized: " + driver);
+        System.out.println("driver initialized:");
+        if(utils == null){
+            System.out.println("utils is null");
+            utils= new TestUtil();
+        }
+        utils.log().info("driver initialized: ");
     }
 
     @AfterTest
@@ -194,12 +209,19 @@ public class BaseClass {
         launchAppAgain();
     }
 
+    public void addLogs(String message){
+        utils.log().info(message);
+        MyExtentReport.getTest().log(Status.INFO, message);
+    }
     public void closeApp() {
         ((InteractsWithApps) getDriver()).closeApp();
+        addLogs("App is Closed !!");
+
     }
 
     public void launchAppAgain() {
         ((InteractsWithApps) getDriver()).launchApp();
+        addLogs("App is Launched !!");
     }
 
     public void waitForEleVisibility(MobileElement ele) {
@@ -221,6 +243,7 @@ public class BaseClass {
     public void tapOnElement(MobileElement ele) {
         waitForEleVisibility(ele);
         ele.click();
+        addLogs("Tapped on element "+ ele);
     }
 
     public void clearElement(MobileElement ele) {
@@ -232,6 +255,7 @@ public class BaseClass {
         waitForEleVisibility(ele);
         clearElement(ele);
         ele.sendKeys(value);
+        addLogs("Entered data in "+ ele + " as " + value);
     }
 
     public String getAndroidElementAttribute(MobileElement ele, String attributeName) {
