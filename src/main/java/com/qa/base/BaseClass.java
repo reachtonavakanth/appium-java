@@ -49,6 +49,7 @@ public class BaseClass {
     private static final long waitTimeOut = 30;
     TestUtil utils = new TestUtil();
 
+
     public AppiumDriver getDriver() {
         return driver.get();
     }
@@ -102,11 +103,12 @@ public class BaseClass {
     }
 
     public void setStringsFilePath(String stringsFilePath2) {
+
         stringsFilePath.set(stringsFilePath2);
     }
 
     public BaseClass() {
-       // PageFactory.initElements(new AppiumFieldDecorator(getDriver()),this);
+        PageFactory.initElements(new AppiumFieldDecorator(getDriver()),this);
     }
 
     public AppiumDriverLocalService createAppiumService() {
@@ -256,7 +258,32 @@ public class BaseClass {
         wait.until(ExpectedConditions.visibilityOf(ele));
     }
 
+    public String logCPUMemoryProfile(){
+              Process process;
+              StringBuffer sb = new StringBuffer();
+              String activityName = ((AndroidDriver) getDriver()).currentActivity();
+              try {
+                  System.out.println("adb shell dumpsys cpuinfo | find \""+getProps().getProperty("androidAppPackage")+"\"");
+                  process = Runtime.getRuntime().exec("cmd /c adb shell dumpsys cpuinfo | find \""+getProps().getProperty("androidAppPackage")+"\"");
+                  sb.append(activityName +" $ "+getResults(process));
+                  process = Runtime.getRuntime().exec("cmd /c adb shell dumpsys meminfo | find \""+getProps().getProperty("androidAppPackage")+"\"");
+                  sb.append(" $ "+getResults(process));
 
+              }catch(Exception e){
+                  e.printStackTrace();
+              }
+              return sb.toString();
+    }
+
+    public String getResults(Process process) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        StringBuffer sb = new StringBuffer();
+        String line = "";
+        while ((line = reader.readLine()) != null) {
+                sb.append(line);
+        }
+        return sb.toString();
+    }
 
     public void waitForEleClickable(MobileElement ele, Long time) {
         WebDriverWait wait = new WebDriverWait(getDriver(), time);
@@ -320,8 +347,10 @@ public class BaseClass {
     }
 
     public void scrollTillText(String text){
-        ((AndroidDriver<MobileElement>)getDriver()).findElementByAndroidUIAutomator("new UiScrollable(new" +
-                "UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().text(\""+text+"\").instance(0))");
+
+        ((AndroidDriver) getDriver()).
+                findElementByAndroidUIAutomator("new UiScrollable(new UiSelector().scrollable(true).instance(0))." +
+                        "scrollIntoView(new UiSelector().text(\""+text+"\"))");
 
     }
 

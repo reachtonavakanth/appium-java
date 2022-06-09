@@ -40,20 +40,25 @@ public class EndToEndTest extends BaseClass {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        new TestUtil().log("Before Login");
+       // new TestUtil().log("Before Login");
         productsPage = loginPage.successfulLogin(jsonObjData.getString("ValidUserName"),
                 jsonObjData.getString("ValidPassword"));
-        new TestUtil().log("Login Successful !");
+      //  new TestUtil().log("Login Successful !");
         menuPage = productsPage.tapAddCartBtn();
+        System.out.println(logCPUMemoryProfile());
         checkoutPage = menuPage.tapCartIConWithCount();
         checkoutPage.tapContinueShoppingBtn();
+        System.out.println(logCPUMemoryProfile());
         menuPage.tapCartIConWithCount();
         checkoutInformationPage = checkoutPage.tapCheckoutShoppingBtn();
+        System.out.println(logCPUMemoryProfile());
         checkoutInformationPage.inputFirstName(jsonObjData.getString("FirstName"));
         checkoutInformationPage.inputLastName(jsonObjData.getString("LastName"));
         checkoutInformationPage.inputZipCode(jsonObjData.getString("zip"));
         checkoutOverviewPage = checkoutInformationPage.tapContinueBtn();
+        System.out.println(logCPUMemoryProfile());
         checkoutCompletePage = checkoutOverviewPage.tapFinishBtn();
+        System.out.println(logCPUMemoryProfile());
         checkoutCompletePage.tapBackHomeBtn();
     }
 }

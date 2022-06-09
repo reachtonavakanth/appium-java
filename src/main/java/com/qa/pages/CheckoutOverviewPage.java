@@ -1,6 +1,7 @@
 package com.qa.pages;
 
 import com.qa.utils.Constants;
+
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
@@ -34,7 +35,7 @@ public class CheckoutOverviewPage extends  MenuPage{
     public CheckoutCompletePage tapFinishBtn() throws InterruptedException {
         long time = 50;
         waitForEleVisibility(sLBPLbl,time);
-        ScrollToFinishBtn();
+        scrollTillText("FINISH");
         tapOnElement(finishBtn);
         return new CheckoutCompletePage();
     }
