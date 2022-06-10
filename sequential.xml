@@ -2,7 +2,8 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 
 <suite name="Suite">
-  <listeners>
+        <listeners>
+
             <listener class-name="com.qa.listners.TestListeners"/>
         </listeners>
     <test name="Pixel2_3">
@@ -14,14 +15,19 @@
         <parameter name="deviceName" value="192.168.168.102:5555"/>
         <parameter name="systemPort" value="10000" />
         <parameter name="chromeDriverPort" value="11000" />
+
         <classes>
-        <!---    <class name="com.qa.tests.LoginTest"/> -->
-            <class name="com.qa.tests.EndToEndTest"/>
+            <!--<class name="com.qa.tests.LoginTest"/>-->
+            <class name="com.qa.tests.EndToEndTest2"/>
         </classes>
+
     </test>
   
 
-    <!--  <test name="iPhone13">
+
+  <!-- 
+   <test name="iPhone13">
+
         <listeners>
             <listener class-name="com.qa.listners.TestListeners"/>
         </listeners>
@@ -34,9 +40,9 @@
             <class name="com.qa.tests.LoginTest"/>
             <class name="com.qa.tests.EndToEndTest"/>
         </classes>
-    </test>-->
+    </test>
 
-<!--
+
     <test name="iPhone12">
         <listeners>
             <listener class-name="com.qa.listners.TestListeners"/>

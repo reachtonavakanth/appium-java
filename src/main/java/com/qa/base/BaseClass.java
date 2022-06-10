@@ -1,5 +1,7 @@
 package com.qa.base;
 
+import com.aventstack.extentreports.Status;
+import com.qa.reports.MyExtentReport;
 import com.qa.utils.TestUtil;
 import io.appium.java_client.*;
 import io.appium.java_client.android.AndroidDriver;
@@ -14,6 +16,8 @@ import io.appium.java_client.service.local.AppiumServiceBuilder;
 import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.ThreadContext;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
@@ -126,7 +130,7 @@ public class BaseClass {
     @Parameters({"emulator", "platformName", "udid", "deviceName", "systemPort",
             "chromeDriverPort", "wdaLocalPort", "webkitDebugProxyPort"})
     @BeforeTest
-    public void launchApp(@Optional("androidOnly") String emulator, String platformName, String udid, String deviceName,
+    public void launchApp(@Optional("androidOnly") String emulator, @Optional String platformName,@Optional String udid, @Optional String deviceName,
                           @Optional("androidOnly") String systemPort, @Optional("androidOnly") String chromeDriverPort,
                           @Optional("iOSOnly") String wdaLocalPort, @Optional("iOSOnly") String webkitDebugProxyPort) throws IOException {
         createAppiumService();
@@ -149,7 +153,12 @@ public class BaseClass {
         Properties props = new Properties();
         props.load(inputStream);
 
-
+        String strFile = "logs" + File.separator + platformName + "_" + deviceName;
+        File logFile = new File(strFile);
+        if (!logFile.exists()) {
+            logFile.mkdirs();
+        }
+        ThreadContext.put("ROUTINGKEY", strFile);
         setDateTime(utils.getDateTime());
         setPlatformName(platformName);
         setDeviceName(deviceName);
@@ -202,12 +211,18 @@ public class BaseClass {
                 // caps.setCapability(MobileCapabilityType.APP, appPath + props.getProperty("iosAppName"));
                 driver = new IOSDriver(url, caps);
             }
-
+          //  utils.log().info(getPlatformName() + " driver is Initialized !!");
         } catch (Exception e) {
+            utils.log().error(getPlatformName() + " driver initialization Failed");
             e.printStackTrace();
         }
         setDriver(driver);
-        utils.log().info("driver initialized: " + driver);
+        System.out.println("driver initialized:");
+        if(utils == null){
+            System.out.println("utils is null");
+            utils= new TestUtil();
+        }
+        //utils.log().info("driver initialized: ");
     }
 
     @AfterTest
@@ -239,12 +254,19 @@ public class BaseClass {
         launchAppAgain();
     }
 
+    public void addLogs(String message){
+        utils.log().info(message);
+        MyExtentReport.getTest().log(Status.INFO, message);
+    }
     public void closeApp() {
         ((InteractsWithApps) getDriver()).closeApp();
+        addLogs("App is Closed !!");
+
     }
 
     public void launchAppAgain() {
         ((InteractsWithApps) getDriver()).launchApp();
+        addLogs("App is Launched !!");
     }
 
     public void waitForEleVisibility(MobileElement ele) {
@@ -293,6 +315,7 @@ public class BaseClass {
     public void tapOnElement(MobileElement ele) {
         waitForEleVisibility(ele);
         ele.click();
+        addLogs("Tapped on element "+ ele);
     }
 
     public void clearElement(MobileElement ele) {
@@ -304,6 +327,7 @@ public class BaseClass {
         waitForEleVisibility(ele);
         clearElement(ele);
         ele.sendKeys(value);
+        addLogs("Entered data in "+ ele + " as " + value);
     }
 
     public String getAndroidElementAttribute(MobileElement ele, String attributeName) {

@@ -11,7 +11,7 @@ import org.testng.annotations.Test;
 import java.io.IOException;
 import java.lang.reflect.Method;
 
-public class EndToEndTest extends BaseClass {
+public class EndToEndTest3 extends BaseClass {
     LoginPage loginPage;
     ProductsPage productsPage;
     MenuPage menuPage;

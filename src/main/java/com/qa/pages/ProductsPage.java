@@ -14,7 +14,44 @@ public class ProductsPage extends MenuPage {
     @AndroidFindBy(xpath = "(//android.view.ViewGroup[@content-desc=\"test-ADD TO CART\"])[1]/android.widget.TextView")
     @iOSXCUITFindBy(xpath ="(//XCUIElementTypeOther[@name=\"test-ADD TO CART\"])[1]")
     private MobileElement sLBPAddCartBtn;
+    
+    @AndroidFindBy(xpath = "//android.view.ViewGroup[@content-desc=\"test-Toggle\"]/android.widget.ImageView")
+    @iOSXCUITFindBy(xpath ="(//XCUIElementTypeOther[@name=\"test-ADD TO CART\"])[1]")
+    private MobileElement listViewButton;
+    
+    @AndroidFindBy(xpath = "//android.widget.TextView[@text='+']")
+    @iOSXCUITFindBy(xpath ="(//XCUIElementTypeOther[@name=\"test-ADD TO CART\"])[1]")
+    private MobileElement addWithPlusButton;
+    
+    @AndroidFindBy(xpath = "//android.view.ViewGroup[@content-desc=\"test-Modal Selector Button\"]/android.view.ViewGroup/android.view.ViewGroup/android.widget.ImageView")
+    @iOSXCUITFindBy(xpath ="(//XCUIElementTypeOther[@name=\"test-ADD TO CART\"])[1]")
+    private MobileElement sortButton;
 
+    @AndroidFindBy(xpath = "(//android.widget.TextView[@text='Price (low to high)']")
+    @iOSXCUITFindBy(xpath ="(//XCUIElementTypeOther[@name=\"test-ADD TO CART\"])[1]")
+    private MobileElement lowToHigh;
+    
+    @AndroidFindBy(xpath = "(//android.widget.TextView[@text='Price (high to low)']")
+    @iOSXCUITFindBy(xpath ="(//XCUIElementTypeOther[@name=\"test-ADD TO CART\"])[1]")
+    private MobileElement highToLow;
+    
+    @AndroidFindBy(xpath = "(//android.widget.TextView[@text='Name (A to Z)']")
+    @iOSXCUITFindBy(xpath ="(//XCUIElementTypeOther[@name=\"test-ADD TO CART\"])[1]")
+    private MobileElement nameAtoZ;
+    
+    @AndroidFindBy(xpath = "(//android.widget.TextView[@text='Name (Z to A)']")
+    @iOSXCUITFindBy(xpath ="(//XCUIElementTypeOther[@name=\"test-ADD TO CART\"])[1]")
+    private MobileElement nameZtoA;
+    
+    @AndroidFindBy(xpath = "(//android.widget.TextView[@text='Cancel']")
+    @iOSXCUITFindBy(xpath ="(//XCUIElementTypeOther[@name=\"test-ADD TO CART\"])[1]")
+    private MobileElement cancel;
+    
+    
+    @AndroidFindBy(xpath = "(//android.widget.TextView[@name='test-Price'])[0]")
+    @iOSXCUITFindBy(xpath ="(//XCUIElementTypeOther[@name=\"test-ADD TO CART\"])[1]")
+    private MobileElement firstItemPrice;
+    
     @AndroidFindBy(accessibility = "test-REMOVE")
     @iOSXCUITFindBy(id ="test-REMOVE")
     private MobileElement removeBtn;
@@ -30,6 +67,39 @@ public MobileElement getRemoveBtn(){
        tapOnElement(sLBPAddCartBtn);
        return new MenuPage();
     }
+    
+    public void tapListButton(){
+        tapOnElement(listViewButton);
+     }
+    
+    public String getButtonText()
+    {
+    	return getText(addWithPlusButton);
+    }
+    
+    public String getItemPrice()
+    {
+    	return getText(firstItemPrice);
+    }
+    
+    public void tapSortButton(){
+        tapOnElement(sortButton);
+      
+     }
+    
+    public void tapSortValue(String sortValue){
+         if("lowToHigh".equals(sortValue))
+        	  tapOnElement(lowToHigh);
+         else if("highToLow".equals(sortValue))
+        	  tapOnElement(highToLow);
+         else if("AtoZ".equals(sortValue))
+       	  tapOnElement(nameAtoZ);
+         else if("ZtoA".equals(sortValue))
+        	 tapOnElement(nameZtoA);
+         else
+        	 tapOnElement(cancel);
+      
+     }
 }
 
 
