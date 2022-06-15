@@ -32,6 +32,7 @@
                 <configuration>
                     <suiteXmlFiles>
                         <suiteXmlFile>sequential.xml</suiteXmlFile>
+                        <suiteXmlFile>parallel.xml</suiteXmlFile>
                     </suiteXmlFiles>
                     <!--
                                     <systemPropertyVariables>

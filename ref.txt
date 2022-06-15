@@ -5,3 +5,8 @@ brew install jenkins-lts
 brew services start jenkins-lts
 brew services restart jenkins-lts
 http://localhost:8080
+
+
+// Jenkins Creds
+UserName : mobileadmin
+Password : Test@123
