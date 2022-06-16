@@ -15,12 +15,13 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 
 public class LoginTest extends BaseClass {
-    JSONObject jsonObjMsg;
     LoginPage loginPage;
     ProductsPage productsPage;
     SettingsPage settingsPage;
     MenuPage menuPage;
-
+    JSONObject jsonObjData = null;
+    JSONArray jsonArrData = null;
+    JSONObject jsonObjMsg;
     @BeforeClass
     public void beforeClass() {
 
@@ -34,18 +35,19 @@ public class LoginTest extends BaseClass {
     @BeforeMethod
     public void beforeMethod(Method m) {
         loginPage = new LoginPage();
-        System.out.println(" *** Started " + m.getName() + " ***");
+        addLogs("****************************************","");
+        addLogs("************* Before Method "+ m.getName() + " *************","");
     }
 
     @AfterMethod
     public void afterMethod(Method m) {
-
+        addLogs("************* After Method "+ m.getName() + " *************","");
+        addLogs("****************************************","");
     }
 
     @Test
     public void invalidLoginTest_01() {
-        JSONObject jsonObjData = null;
-        JSONArray jsonArrData = null;
+
         try {
             jsonObjData = new TestUtil().getJsonObject(getTestDataFilePath(), "TC_01");
             jsonObjMsg = new TestUtil().getJsonObject(getStringsFileFilePath(), "LoginPage");
@@ -64,8 +66,6 @@ public class LoginTest extends BaseClass {
 
     @Test
     public void validLoginTest_02() {
-        JSONObject jsonObjData = null;
-        JSONArray jsonArrData = null;
         try {
             jsonObjData = new TestUtil().getJsonObject(getTestDataFilePath(), "TC_02");
             jsonObjMsg = new TestUtil().getJsonObject(getStringsFileFilePath(), "Products");
@@ -83,8 +83,6 @@ public class LoginTest extends BaseClass {
 
     @Test
     public void verifyLogout() {
-        JSONObject jsonObjData = null;
-        JSONArray jsonArrData = null;
         try {
             jsonObjData = new TestUtil().getJsonObject(getTestDataFilePath(), "TC_02");
             jsonObjMsg = new TestUtil().getJsonObject(getStringsFileFilePath(), "Products");

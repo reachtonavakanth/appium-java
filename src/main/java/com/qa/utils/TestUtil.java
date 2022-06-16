@@ -21,7 +21,7 @@ public class TestUtil {
      * @param: filepath - File Path for .properties file, key - Key for searching in .properties file
      * @return: returns string Value if key matches
      * */
-    protected String getKeyValue(String filepath, String key) throws IOException {
+    public String getKeyValue(String filepath, String key) throws IOException {
         Properties prop = new Properties();
         String value = null;
         InputStream input = null;

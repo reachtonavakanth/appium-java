@@ -9,6 +9,9 @@ import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.remote.MobileCapabilityType;
 import io.appium.java_client.screenrecording.CanRecordScreen;
+import io.appium.java_client.service.local.AppiumDriverLocalService;
+import io.appium.java_client.service.local.AppiumServiceBuilder;
+import io.appium.java_client.service.local.flags.GeneralServerFlag;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.ThreadContext;
@@ -22,6 +25,7 @@ import org.testng.ITestResult;
 import org.testng.annotations.*;
 
 import java.io.*;
+import java.net.ServerSocket;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Locale;
@@ -36,6 +40,8 @@ public class BaseClass {
     protected static ThreadLocal<String> deviceName = new ThreadLocal<String>();
     protected static ThreadLocal<String> testDataFilePath = new ThreadLocal<String>();
     protected static ThreadLocal<String> stringsFilePath = new ThreadLocal<String>();
+    protected static ThreadLocal<String> appConfigFilePath = new ThreadLocal<String>();
+    private static AppiumDriverLocalService server;
     private static final long waitTimeOut = 30;
     TestUtil utils = new TestUtil();
 
@@ -95,6 +101,15 @@ public class BaseClass {
         stringsFilePath.set(stringsFilePath2);
     }
 
+    public String getAppConfigFilePath() {
+        return appConfigFilePath.get();
+    }
+
+    public void setAppConfigFilePath(String stringsFilePath2) {
+        appConfigFilePath.set(stringsFilePath2);
+    }
+
+
     public BaseClass() {
         PageFactory.initElements(new AppiumFieldDecorator(getDriver()), this);
     }
@@ -137,6 +152,7 @@ public class BaseClass {
         setDeviceName(deviceName);
         setTestDataFilePath(testDataPath);
         setStringsFilePath(stringsPath);
+        setAppConfigFilePath(propFilePath);
         setProps(props);
 
         AppiumDriver driver = null;
@@ -171,18 +187,79 @@ public class BaseClass {
                 // caps.setCapability(MobileCapabilityType.APP, appPath + props.getProperty("iosAppName"));
                 driver = new IOSDriver(url, caps);
             }
-          //  utils.log().info(getPlatformName() + " driver is Initialized !!");
+            //  utils.log().info(getPlatformName() + " driver is Initialized !!");
         } catch (Exception e) {
             utils.log().error(getPlatformName() + " driver initialization Failed");
             e.printStackTrace();
         }
         setDriver(driver);
         System.out.println("driver initialized:");
-        if(utils == null){
+        if (utils == null) {
             System.out.println("utils is null");
-            utils= new TestUtil();
+            utils = new TestUtil();
         }
         utils.log().info("driver initialized: ");
+    }
+
+    @BeforeSuite
+    public void beforeSuite() throws Exception, Exception {
+        ThreadContext.put("ROUTINGKEY", "ServerLogs");
+        System.out.println(System.getProperty("os.name"));
+        if (System.getProperty("os.name").contains("windows")) {
+            server = getAppiumServerDefault();
+        } else if (System.getProperty("os.name").contains("Mac")) {
+            server = getAppiumService();
+        }
+        if (!checkIfAppiumServerIsRunnning(4723)) { // May not work exactly appium limitation
+            server.start();
+            server.clearOutPutStreams(); // -> Comment this if you don't want to see server logs in the console
+            utils.log().info("Appium server started");
+        } else {
+            utils.log().info("Appium server already running");
+        }
+    }
+
+    public boolean checkIfAppiumServerIsRunnning(int port) throws Exception {
+        boolean isAppiumServerRunning = false;
+        ServerSocket socket;
+        try {
+            socket = new ServerSocket(port);
+            socket.close();
+        } catch (IOException e) {
+            System.out.println("1");
+            isAppiumServerRunning = true;
+        } finally {
+            socket = null;
+        }
+        return isAppiumServerRunning;
+    }
+
+    // for Windows
+    public AppiumDriverLocalService getAppiumServerDefault() {
+        return AppiumDriverLocalService.buildDefaultService();
+    }
+
+    // for mac
+    public AppiumDriverLocalService getAppiumService() {
+        HashMap<String, String> environment = new HashMap<String, String>();
+        environment.put("PATH", "/Users/navakanthnavi/Library/Android/sdk:/Users/navakanthnavi/Library/Android/sdk/platform-tools:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin" + System.getenv("PATH"));
+        environment.put("ANDROID_HOME", "/Users/navakanthnavi/Library/Android/sdk");
+        return AppiumDriverLocalService.buildService(new AppiumServiceBuilder()
+                .usingDriverExecutable(new File("/usr/local/bin/node"))
+                .withAppiumJS(new File("/usr/local/lib/node_modules/appium/build/lib/main.js"))
+                .usingPort(4723)
+                .withArgument(GeneralServerFlag.SESSION_OVERRIDE)
+//				.withArgument(() -> "--allow-insecure","chromedriver_autodownload")
+                .withEnvironment(environment)
+                .withLogFile(new File("ServerLogs/server.log")));
+    }
+
+    @AfterSuite(alwaysRun = true)
+    public void afterSuite() {
+        if (server.isRunning()) {
+            server.stop();
+            utils.log().info("Appium server stopped");
+        }
     }
 
     @AfterTest
@@ -191,28 +268,33 @@ public class BaseClass {
     }
 
     @BeforeMethod
-    public void beforeMethod() {
-        ((CanRecordScreen) getDriver()).startRecordingScreen();
+    public void beforeMethod(ITestResult result) throws IOException {
+        if (utils.getKeyValue(getAppConfigFilePath(), "screenRecording").equalsIgnoreCase("true"))
+            ((CanRecordScreen) getDriver()).startRecordingScreen();
     }
 
     @AfterMethod
     public void redirect(ITestResult result) throws IOException {
-
-        stopVideoRecording(result);
-
+        if (utils.getKeyValue(getAppConfigFilePath(), "screenRecording").equalsIgnoreCase("true"))
+            stopVideoRecording(result);
         if (result.getStatus() == ITestResult.FAILURE) {
-            System.out.println("Test is Fail"); //getDriver().installApp()
+
         } else if (result.getStatus() == ITestResult.SUCCESS) {
-            System.out.println("Test is Pass");
+
         }
         closeApp();
         launchAppAgain();
     }
 
-    public void addLogs(String message){
+    public void addLogs(String message) {
         utils.log().info(message);
         MyExtentReport.getTest().log(Status.INFO, message);
     }
+
+    public void addLogs(String message, String str) {
+        utils.log().info(message);
+    }
+
     public void closeApp() {
         ((InteractsWithApps) getDriver()).closeApp();
         addLogs("App is Closed !!");
@@ -243,7 +325,7 @@ public class BaseClass {
     public void tapOnElement(MobileElement ele) {
         waitForEleVisibility(ele);
         ele.click();
-        addLogs("Tapped on element "+ ele);
+        addLogs("Tapped on element " + ele);
     }
 
     public void clearElement(MobileElement ele) {
@@ -255,7 +337,7 @@ public class BaseClass {
         waitForEleVisibility(ele);
         clearElement(ele);
         ele.sendKeys(value);
-        addLogs("Entered data in "+ ele + " as " + value);
+        addLogs("Entered data in " + ele + " as " + value);
     }
 
     public String getAndroidElementAttribute(MobileElement ele, String attributeName) {

@@ -5,8 +5,7 @@ import com.qa.pages.*;
 import com.qa.utils.TestUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -21,18 +20,35 @@ public class EndToEndTest extends BaseClass {
     CheckoutInformationPage checkoutInformationPage;
     CheckoutOverviewPage checkoutOverviewPage;
     CheckoutCompletePage checkoutCompletePage;
+    JSONObject jsonObjData = null;
+    JSONArray jsonArrData = null;
+    JSONObject jsonObjMsg = null;
+
+    @BeforeClass
+    public void beforeClass() {
+
+    }
+
+    @AfterClass
+    public void afterClass() {
+
+    }
 
     @BeforeMethod
     public void objInit(Method m) {
         loginPage = new LoginPage();
-        System.out.println(" *** Started " + m.getName() + " ***");
+        addLogs("****************************************", "");
+        addLogs("************* Before Method" + m.getName() + "*************");
+    }
+
+    @AfterMethod
+    public void afterTests(Method m) {
+        addLogs("************* After Method" + m.getName() + "*************");
+        addLogs("****************************************", "");
     }
 
     @Test
     public void Tc_01() throws InterruptedException {
-
-        JSONObject jsonObjData = null;
-        JSONObject jsonObjMsg = null;
         try {
             jsonObjData = new TestUtil().getJsonObject(getTestDataFilePath(), "TC_04");
             jsonObjMsg = new TestUtil().getJsonObject(getStringsFileFilePath(), "LoginPage");

@@ -75,8 +75,7 @@ public class TestListeners implements ITestListener {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        MyExtentReport.getTest().fail("Test Failed",
-                MediaEntityBuilder.createScreenCaptureFromPath(completeImagePath).build());
+     //   MyExtentReport.getTest().fail("Test Failed",MediaEntityBuilder.createScreenCaptureFromPath(completeImagePath).build());
         MyExtentReport.getTest().fail("Test Failed",
              MediaEntityBuilder.createScreenCaptureFromBase64String(new String(encoded, StandardCharsets.US_ASCII)).build());
         MyExtentReport.getTest().fail(result.getThrowable());
