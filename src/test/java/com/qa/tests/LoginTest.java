@@ -46,7 +46,7 @@ public class LoginTest extends BaseClass {
     }
 
     @Test
-    public void invalidLoginTest_01() {
+    public void TC_01_invalidLogin() {
 
         try {
             jsonObjData = new TestUtil().getJsonObject(getTestDataFilePath(), "TC_01");
@@ -65,7 +65,7 @@ public class LoginTest extends BaseClass {
     }
 
     @Test
-    public void validLoginTest_02() {
+    public void TC_02_ValidLoginTest() {
         try {
             jsonObjData = new TestUtil().getJsonObject(getTestDataFilePath(), "TC_02");
             jsonObjMsg = new TestUtil().getJsonObject(getStringsFileFilePath(), "Products");
@@ -82,7 +82,7 @@ public class LoginTest extends BaseClass {
     }
 
     @Test
-    public void verifyLogout() {
+    public void Tc_03_VerifyLogout() {
         try {
             jsonObjData = new TestUtil().getJsonObject(getTestDataFilePath(), "TC_02");
             jsonObjMsg = new TestUtil().getJsonObject(getStringsFileFilePath(), "Products");
@@ -95,6 +95,7 @@ public class LoginTest extends BaseClass {
         productsPage = loginPage.tapLoginButton();
         settingsPage = productsPage.tapMenuICon();
         loginPage = settingsPage.tapLogoutText();
+        productsPage.tapMenuICon();
     }
 
 
