@@ -1,3 +1,7 @@
+# Sample Execution Video
+
+https://youtu.be/Z3r5vbW8R3k
+
 # Introduction
 
 In this POC below test cases are automated in Android and iOS platforms. Mobile app used for testing is SauceLab's demo mobile application.
