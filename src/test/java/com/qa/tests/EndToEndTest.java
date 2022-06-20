@@ -35,15 +35,15 @@ public class EndToEndTest extends BaseClass {
     }
 
     @BeforeMethod
-    public void objInit(Method m) {
+    public void beforeMethod(Method m) {
         loginPage = new LoginPage();
         addLogs("****************************************", "");
-        addLogs("************* Before Method" + m.getName() + "*************");
+        addLogs("************* Before Method" + m.getName() + "*************","");
     }
 
     @AfterMethod
     public void afterTests(Method m) {
-        addLogs("************* After Method" + m.getName() + "*************");
+        addLogs("************* After Method" + m.getName() + "*************","");
         addLogs("****************************************", "");
     }
 
