@@ -6,5 +6,6 @@ public class Constants {
     public enum KeysCaps {A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z}
     public enum KeyActions {shift,delete,more,space,Return}
     public enum ScrollActions {up,down}
+    public enum Os {Windows,Mac}
 
 }

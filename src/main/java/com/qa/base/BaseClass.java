@@ -2,6 +2,7 @@ package com.qa.base;
 
 import com.aventstack.extentreports.Status;
 import com.qa.reports.MyExtentReport;
+import com.qa.utils.Constants;
 import com.qa.utils.TestUtil;
 import io.appium.java_client.*;
 import io.appium.java_client.android.AndroidDriver;
@@ -195,7 +196,6 @@ public class BaseClass {
         setDriver(driver);
         System.out.println("driver initialized:");
         if (utils == null) {
-            System.out.println("utils is null");
             utils = new TestUtil();
         }
         utils.log().info("driver initialized: ");
@@ -204,10 +204,10 @@ public class BaseClass {
     @BeforeSuite
     public void beforeSuite() throws Exception, Exception {
         ThreadContext.put("ROUTINGKEY", "ServerLogs");
-        System.out.println(System.getProperty("os.name"));
-        if (System.getProperty("os.name").contains("windows")) {
-            server = getAppiumServerDefault();
-        } else if (System.getProperty("os.name").contains("Mac")) {
+       // System.out.println(System.getProperty("os.name"));
+        if (System.getProperty("os.name").contains(String.valueOf(Constants.Os.Windows))) {
+             server = getAppiumServerDefault();
+        } else if (System.getProperty("os.name").contains(String.valueOf(Constants.Os.Mac))) {
             server = getAppiumService();
         }
         if (!checkIfAppiumServerIsRunnning(4723)) { // May not work exactly appium limitation
@@ -226,7 +226,7 @@ public class BaseClass {
             socket = new ServerSocket(port);
             socket.close();
         } catch (IOException e) {
-            System.out.println("1");
+           // System.out.println("1");
             isAppiumServerRunning = true;
         } finally {
             socket = null;
@@ -379,6 +379,13 @@ public class BaseClass {
                 "new UiScrollable(new UiSelector()" + ".scrollable(true)).scrollIntoView("
                         + "new UiSelector().description(" + value + "));");
     }
+
+    public void scrollTillText(String text){
+        ((AndroidDriver) getDriver()).
+                findElementByAndroidUIAutomator("new UiScrollable(new UiSelector().scrollable(true).instance(0))." +
+                        "scrollIntoView(new UiSelector().text(\""+text+"\"))");
+    }
+
 
     // Scrollable element is identified by XCUIElementTypeScrollView tag
     public void iosScroll(String scrollType) {

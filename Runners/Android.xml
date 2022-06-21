@@ -4,15 +4,15 @@
         <listeners>
             <listener class-name="com.qa.listners.TestListeners"/>
         </listeners>
-        <parameter name="emulator" value="true"/>
+        <parameter name="emulator" value="false"/>
         <parameter name="platformName" value="Android"/>
         <parameter name="platformVersion" value="12"/>
-        <parameter name="udid" value="emulator-5554"/>
-        <parameter name="deviceName" value="Pixel_3"/>
+        <parameter name="udid" value="5904c623"/>
+        <parameter name="deviceName" value="Galaxy Grand Prime Pro"/>
         <parameter name="systemPort" value="10000"/>
         <parameter name="chromeDriverPort" value="11000"/>
         <classes>
-            <class name="com.qa.tests.LoginTest"/>
+           <!-- <class name="com.qa.tests.LoginTest"/>-->
             <class name="com.qa.tests.EndToEndTest"/>
         </classes>
     </test>

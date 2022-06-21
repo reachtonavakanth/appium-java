@@ -44,8 +44,7 @@ public class CheckoutOverviewPage extends  MenuPage{
       iosScroll(String.valueOf(Constants.ScrollActions.down));
         }
         else if (getPlatformName().equalsIgnoreCase("Android")){
-       // scrollToElement_Android2("test-FINISH");
-            scrollToElement_Android1();
+        scrollTillText("FINISH");
         }
     }
 

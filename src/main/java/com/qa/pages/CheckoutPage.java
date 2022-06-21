@@ -19,6 +19,11 @@ public class CheckoutPage extends MenuPage {
     }
 
     public CheckoutInformationPage tapCheckoutShoppingBtn() {
+      /*  if(!checkoutBtn.isDisplayed()){
+            System.out.println("in If condition");
+            scrollTillText("CHECKOUT");
+        }*/
+        scrollTillText("CHECKOUT");
         tapOnElement(checkoutBtn);
         return new CheckoutInformationPage();
     }
