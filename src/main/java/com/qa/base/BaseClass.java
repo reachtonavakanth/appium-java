@@ -24,14 +24,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
+import org.testng.annotations.Optional;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 public class BaseClass {
     protected static ThreadLocal<AppiumDriver> driver = new ThreadLocal<AppiumDriver>();
@@ -458,5 +456,19 @@ public class BaseClass {
                 stream.close();
             }
         }
+    }
+
+    public void switchToNativeContext(){
+        getDriver().context("NATIVE_APP");
+    }
+    public void switchToContextIndex(int num){
+        Set<String> contextHandles = getDriver().getContextHandles();
+        for(Object contextHandle: contextHandles){
+            System.out.println(contextHandle.toString());
+        }
+        getDriver().context(contextHandles.toArray()[num].toString());
+    }
+    public void switchToContextName(String contextName){
+        getDriver().context(contextName);
     }
 }
