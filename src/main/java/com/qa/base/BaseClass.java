@@ -114,10 +114,10 @@ public class BaseClass {
     }
 
 
-    @Parameters({"emulator", "platformName", "udid", "deviceName", "systemPort",
+    @Parameters({"emulator", "platformVersion","platformName", "udid", "deviceName", "systemPort",
             "chromeDriverPort", "wdaLocalPort", "webkitDebugProxyPort"})
     @BeforeTest
-    public void launchApp(@Optional("androidOnly") String emulator, String platformName, String udid, String deviceName,
+    public void launchApp(@Optional("androidOnly") String emulator,@Optional("androidOnly") String platformVersion, String platformName, String udid, String deviceName,
                           @Optional("androidOnly") String systemPort, @Optional("androidOnly") String chromeDriverPort,
                           @Optional("iOSOnly") String wdaLocalPort, @Optional("iOSOnly") String webkitDebugProxyPort) throws IOException {
 
@@ -169,14 +169,13 @@ public class BaseClass {
                     caps.setCapability("avdLaunchTimeout", 120000);
                 }
                 caps.setCapability(MobileCapabilityType.AUTOMATION_NAME, props.getProperty("androidAutomationName"));
-                //caps.setCapability(MobileCapabilityType.PLATFORM_VERSION, platformVersion);
-                caps.setCapability(MobileCapabilityType.APP, appPath + props.getProperty("androidAppName"));
-                caps.setCapability("appPackage", props.getProperty("androidAppPackage"));
-                caps.setCapability("appActivity", props.getProperty("androidAppActivity"));
+              caps.setCapability(MobileCapabilityType.PLATFORM_VERSION, platformVersion);
                 caps.setCapability("ignoreHiddenApiPolicyError", true);
-                caps.setCapability("systemPort", systemPort);
-                caps.setCapability("chromeDriverPort", chromeDriverPort);
-                // caps.setCapability("--session-override",true);
+                caps.setCapability(MobileCapabilityType.BROWSER_NAME, "Chrome");
+                String path= System.getProperty("user.dir") + File.separator+"src"+ File.separator+"test"+ File.separator+"resources"+ File.separator+"browserdrivers";
+                caps.setCapability("chromedriverExecutableDir", path);
+                //  caps.setCapability("systemPort", systemPort);
+                //caps.setCapability("chromeDriverPort", chromeDriverPort);
                 driver = new AndroidDriver(url, caps);
             } else if (platformName.equalsIgnoreCase("iOS")) {
                 caps.setCapability(MobileCapabilityType.AUTOMATION_NAME, props.getProperty("iosAutomationName"));
@@ -193,10 +192,8 @@ public class BaseClass {
         }
         setDriver(driver);
         System.out.println("driver initialized:");
-        if (utils == null) {
-            utils = new TestUtil();
-        }
         utils.log().info("driver initialized: ");
+        getDriver().get("https://naveenautomationlabs.com/opencart");
     }
 
     @BeforeSuite
@@ -204,9 +201,9 @@ public class BaseClass {
         ThreadContext.put("ROUTINGKEY", "ServerLogs");
        // System.out.println(System.getProperty("os.name"));
         if (System.getProperty("os.name").contains(String.valueOf(Constants.Os.Windows))) {
-             server = getAppiumServerDefault();
+             //server = getAppiumServerDefault();
         } else if (System.getProperty("os.name").contains(String.valueOf(Constants.Os.Mac))) {
-            server = getAppiumService();
+           // server = getAppiumService();
         }
         if (!checkIfAppiumServerIsRunnning(4723)) { // May not work exactly appium limitation
             server.start();
@@ -254,10 +251,10 @@ public class BaseClass {
 
     @AfterSuite(alwaysRun = true)
     public void afterSuite() {
-        if (server.isRunning()) {
+        /*if (server.isRunning()) {
             server.stop();
             utils.log().info("Appium server stopped");
-        }
+        }*/
     }
 
     @AfterTest

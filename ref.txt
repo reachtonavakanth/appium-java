@@ -1,20 +1,5 @@
-********* mvn Run command *********
-mvn test -Dsurefire.suiteXmlFiles=Runners/iOS_parallel.xml
+// Practice Sites
+https://naveenautomationlabs.com/opencart/
+https://www.saucedemo.com/inventory.html
 
-********* Jenkins Installation mac *********
-brew install jenkins-lts
-brew services start jenkins-lts
-brew services restart jenkins-lts
-http://localhost:8080
-
-********* Jenkins Credentials ********
-UserName : mobileadmin
-Password : Test@123
-
-********* Kill Appium Server *********
-********* mac ************************
-lsof -P | grep ':4723' | awk '{print $2}' | xargs kill -9
-********* Windows ********************
-netstat -ano|findstr "PID :4723"
-taskkill /pid 11388 /f
-
+appium --allow-insecure chromedriver_autodownload
