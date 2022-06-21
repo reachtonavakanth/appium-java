@@ -27,34 +27,39 @@ public class ProductsPage extends MenuPage {
     @iOSXCUITFindBy(xpath ="(//XCUIElementTypeOther[@name=\"test-ADD TO CART\"])[1]")
     private MobileElement sortButton;
 
-    @AndroidFindBy(xpath = "(//android.widget.TextView[@text='Price (low to high)']")
+    @AndroidFindBy(xpath = "//android.widget.TextView[@text='Price (low to high)']")
     @iOSXCUITFindBy(xpath ="(//XCUIElementTypeOther[@name=\"test-ADD TO CART\"])[1]")
     private MobileElement lowToHigh;
     
-    @AndroidFindBy(xpath = "(//android.widget.TextView[@text='Price (high to low)']")
+    @AndroidFindBy(xpath = "//android.widget.TextView[@text='Price (high to low)']")
     @iOSXCUITFindBy(xpath ="(//XCUIElementTypeOther[@name=\"test-ADD TO CART\"])[1]")
     private MobileElement highToLow;
     
-    @AndroidFindBy(xpath = "(//android.widget.TextView[@text='Name (A to Z)']")
+    @AndroidFindBy(xpath = "//android.widget.TextView[@text='Name (A to Z)']")
     @iOSXCUITFindBy(xpath ="(//XCUIElementTypeOther[@name=\"test-ADD TO CART\"])[1]")
     private MobileElement nameAtoZ;
     
-    @AndroidFindBy(xpath = "(//android.widget.TextView[@text='Name (Z to A)']")
+    @AndroidFindBy(xpath = "//android.widget.TextView[@text='Name (Z to A)']")
     @iOSXCUITFindBy(xpath ="(//XCUIElementTypeOther[@name=\"test-ADD TO CART\"])[1]")
     private MobileElement nameZtoA;
     
-    @AndroidFindBy(xpath = "(//android.widget.TextView[@text='Cancel']")
+    @AndroidFindBy(xpath = "//android.widget.TextView[@text='Cancel']")
     @iOSXCUITFindBy(xpath ="(//XCUIElementTypeOther[@name=\"test-ADD TO CART\"])[1]")
     private MobileElement cancel;
     
     
-    @AndroidFindBy(xpath = "(//android.widget.TextView[@name='test-Price'])[0]")
+    @AndroidFindBy(xpath = "(//android.widget.TextView[@content-desc=\"test-Price\"])[1]")
     @iOSXCUITFindBy(xpath ="(//XCUIElementTypeOther[@name=\"test-ADD TO CART\"])[1]")
     private MobileElement firstItemPrice;
+
+    @AndroidFindBy(xpath = "(//android.widget.TextView[@content-desc=\"test-Item title\"])[1]")
+    @iOSXCUITFindBy(xpath ="(//XCUIElementTypeOther[@name=\"test-ADD TO CART\"])[1]")
+    private MobileElement firstItemTitle;
     
     @AndroidFindBy(accessibility = "test-REMOVE")
     @iOSXCUITFindBy(id ="test-REMOVE")
     private MobileElement removeBtn;
+
 
 public MobileElement getRemoveBtn(){
     return removeBtn;
@@ -80,6 +85,11 @@ public MobileElement getRemoveBtn(){
     public String getItemPrice()
     {
     	return getText(firstItemPrice);
+    }
+
+    public String getItemTitle()
+    {
+        return getText(firstItemTitle);
     }
     
     public void tapSortButton(){

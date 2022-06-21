@@ -1,19 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suite name="Suite" parallel="tests">
-    <!--    <test name="Pixel_3">
+        <test name="Real Device">
         <listeners>
             <listener class-name="com.qa.listners.TestListeners" />
         </listeners>
-        <parameter name="emulator" value="true" />
+        <parameter name="emulator" value="false" />
         <parameter name="platformName" value="Android" />
-        <parameter name="platformVersion" value="11" />
-        <parameter name="udid" value="emulator-5554" />
-        <parameter name="deviceName" value="Pixel_3" />
+        <parameter name="platformVersion" value="12" />
+            <parameter name="udid" value="CMHQWO854PRKAY5H"/>
+            <parameter name="deviceName" value="CMHQWO854PRKAY5H"/>
+            <parameter name="systemPort" value="10000" />
+        <parameter name="chromeDriverPort" value="11000" />
         <classes>
-            <class name="com.qa.tests.LoginTest"/>
-            <class name="com.qa.tests.EndToEndTest"/>
+            <class name="com.qa.tests.EndToEndTest3"/>
         </classes>
-    </test> -->
+    </test>
+
+        <test name="Pixel2_3">
+            <listeners>
+                <listener class-name="com.qa.listners.TestListeners" />
+            </listeners>
+            <parameter name="emulator" value="false" />
+            <parameter name="platformName" value="Android" />
+            <parameter name="platformVersion" value="12" />
+            <parameter name="udid" value="192.168.168.101:5555"/>
+            <parameter name="deviceName" value="192.168.168.101:5555"/>
+            <parameter name="systemPort" value="10001" />
+            <parameter name="chromeDriverPort" value="11001" />
+            <classes>
+                <class name="com.qa.tests.EndToEndTest5"/>
+        </classes>
+    </test>
+
+    <!--
     <test name="iPhone13">
         <listeners>
             <listener class-name="com.qa.listners.TestListeners"/>
@@ -42,5 +61,5 @@
             <class name="com.qa.tests.LoginTest"/>
         <class name="com.qa.tests.EndToEndTest"/>
         </classes>
-    </test>
+    </test>-->
 </suite> <!-- Suite -->

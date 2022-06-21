@@ -3,9 +3,7 @@ package com.qa.tests;
 import com.qa.base.BaseClass;
 import com.qa.pages.*;
 import com.qa.utils.TestUtil;
-import org.json.JSONArray;
 import org.json.JSONObject;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -13,7 +11,7 @@ import org.testng.asserts.SoftAssert;
 import java.io.IOException;
 import java.lang.reflect.Method;
 
-public class EndToEndTest3 extends BaseClass {
+public class EndToEndTest5 extends BaseClass {
     LoginPage loginPage;
     ProductsPage productsPage;
     MenuPage menuPage;
@@ -31,7 +29,7 @@ public class EndToEndTest3 extends BaseClass {
     }
 
     @Test
-    public void e2eSortHighToLow() throws InterruptedException {
+    public void e2eSortZtoA() throws InterruptedException {
 
         JSONObject jsonObjData = null;
         JSONObject jsonObjMsg = null;
@@ -47,14 +45,14 @@ public class EndToEndTest3 extends BaseClass {
         // new TestUtil().log("Before Login");
         productsPage = loginPage.successfulLogin(jsonObjData.getString("ValidUserName"),
                 jsonObjData.getString("ValidPassword"));
-        // new TestUtil().log("Login Successful !");
+        new TestUtil().log("Login Successful !");
 
         productsPage.tapListButton();
         softAssert.assertEquals("+", productsPage.getButtonText(), "Item has different button type");
         productsPage.tapSortButton();
-        productsPage.tapSortValue("highToLow");
+        productsPage.tapSortValue("ZtoA");
 
-        softAssert.assertEquals("$29.99", productsPage.getItemPrice(), "Item Price not the lowest");
+        softAssert.assertEquals("Test.allTheThings() T-Shirt (Red)", productsPage.getItemTitle(), "Item Title is not sorted as Z to A");
 
         menuPage = productsPage.tapAddCartBtn();
 

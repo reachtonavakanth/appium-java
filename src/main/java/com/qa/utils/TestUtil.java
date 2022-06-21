@@ -1,5 +1,6 @@
 package com.qa.utils;
 
+import com.qa.base.BaseClass;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.ThreadContext;
@@ -130,14 +131,14 @@ public class TestUtil {
     }
 
 
-    /* public void log(String txt) {
+     public void log(String txt) {
          BaseClass base = new BaseClass();
          String msg = Thread.currentThread().getId() + ":" + base.getPlatformName() + ":" + base.getDeviceName() + ":"
                  + Thread.currentThread().getStackTrace()[2].getClassName() + ":" + txt;
 
          System.out.println(msg);
 
-         String strFile = "logs" + File.separator + base.getPlatformName() + "_" + base.getDeviceName()
+         String strFile = "logs" + File.separator + base.getPlatformName() + "_" + base.getDeviceName().replaceAll("\\.","_").replaceAll(":","_")
                  + File.separator + base.getDateTime();
 
          File logFile = new File(strFile);
@@ -156,8 +157,8 @@ public class TestUtil {
          PrintWriter printWriter = new PrintWriter(fileWriter);
          printWriter.println(msg);
          printWriter.close();
-         return LogManager.getLogger(Thread.currentThread().getStackTrace()[2].getClassName());
-     }*/
+        // return LogManager.getLogger(Thread.currentThread().getStackTrace()[2].getClassName());
+     }
     public Logger log() {
         return LogManager.getLogger(Thread.currentThread().getStackTrace()[2].getClassName());
     }

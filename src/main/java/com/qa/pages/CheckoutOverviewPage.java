@@ -27,7 +27,7 @@ public class CheckoutOverviewPage extends  MenuPage{
     }
 
     public ProductsPage tapCancelBtn() throws InterruptedException {
-        ScrollToCancelBtn();
+        scrollTillText("CANCEL");
         tapOnElement(cancelBtn);
         return new ProductsPage();
     }

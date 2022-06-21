@@ -3,9 +3,7 @@ package com.qa.tests;
 import com.qa.base.BaseClass;
 import com.qa.pages.*;
 import com.qa.utils.TestUtil;
-import org.json.JSONArray;
 import org.json.JSONObject;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -13,7 +11,7 @@ import org.testng.asserts.SoftAssert;
 import java.io.IOException;
 import java.lang.reflect.Method;
 
-public class EndToEndTest3 extends BaseClass {
+public class EndToEndTest4 extends BaseClass {
     LoginPage loginPage;
     ProductsPage productsPage;
     MenuPage menuPage;
@@ -31,7 +29,7 @@ public class EndToEndTest3 extends BaseClass {
     }
 
     @Test
-    public void e2eSortHighToLow() throws InterruptedException {
+    public void e2eSortAtoZ() throws InterruptedException {
 
         JSONObject jsonObjData = null;
         JSONObject jsonObjMsg = null;
@@ -52,9 +50,9 @@ public class EndToEndTest3 extends BaseClass {
         productsPage.tapListButton();
         softAssert.assertEquals("+", productsPage.getButtonText(), "Item has different button type");
         productsPage.tapSortButton();
-        productsPage.tapSortValue("highToLow");
+        productsPage.tapSortValue("AtoZ");
 
-        softAssert.assertEquals("$29.99", productsPage.getItemPrice(), "Item Price not the lowest");
+        softAssert.assertEquals("Sauce Labs Backpack", productsPage.getItemTitle(), "Item Title not sorted in A to Z order");
 
         menuPage = productsPage.tapAddCartBtn();
 

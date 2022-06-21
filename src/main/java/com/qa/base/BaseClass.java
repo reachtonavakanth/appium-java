@@ -153,7 +153,7 @@ public class BaseClass {
         Properties props = new Properties();
         props.load(inputStream);
 
-        String strFile = "logs" + File.separator + platformName + "_" + deviceName;
+        String strFile = "logs" + File.separator + platformName + "_" + deviceName.replaceAll("\\.","_").replaceAll(":","_");
         File logFile = new File(strFile);
         if (!logFile.exists()) {
             logFile.mkdirs();
@@ -185,9 +185,9 @@ public class BaseClass {
                 caps.setCapability(MobileCapabilityType.APP, appPath + props.getProperty("androidAppName"));
                 caps.setCapability("appPackage", props.getProperty("androidAppPackage"));
                 caps.setCapability("appActivity", props.getProperty("androidAppActivity"));
-                caps.setCapability("ignoreHiddenApiPolicyError", true);
-              //  caps.setCapability("systemPort", systemPort);
-               // caps.setCapability("chromeDriverPort", chromeDriverPort);
+                caps.setCapability("ignoreHiddenApiPolicyError", false);
+                caps.setCapability("systemPort", systemPort);
+                caps.setCapability("chromeDriverPort", chromeDriverPort);
                 caps.setCapability("noReset", true);
                 caps.setCapability("chromedriverExecutable",System.getProperty("user.dir")+File.separator+"src"+File.separator+"test"+File.separator+
                         "resources"+File.separator+"drivers"+File.separator+"chromedriver.exe");
@@ -195,6 +195,7 @@ public class BaseClass {
                // driver = new AndroidDriver(url, caps);
                 try {
         			driver = new AndroidDriver(new URL(service.getUrl().toString()), caps);
+                    Thread.sleep(3000);
 
         		} catch (MalformedURLException e) {
         		          e.printStackTrace();
@@ -211,7 +212,7 @@ public class BaseClass {
                 // caps.setCapability(MobileCapabilityType.APP, appPath + props.getProperty("iosAppName"));
                 driver = new IOSDriver(url, caps);
             }
-          //  utils.log().info(getPlatformName() + " driver is Initialized !!");
+            utils.log().info(getPlatformName() + " driver is Initialized !!");
         } catch (Exception e) {
             utils.log().error(getPlatformName() + " driver initialization Failed");
             e.printStackTrace();
@@ -222,7 +223,7 @@ public class BaseClass {
             System.out.println("utils is null");
             utils= new TestUtil();
         }
-        //utils.log().info("driver initialized: ");
+        utils.log().info("driver initialized: ");
     }
 
     @AfterTest
@@ -255,7 +256,7 @@ public class BaseClass {
     }
 
     public void addLogs(String message){
-        utils.log().info(message);
+      //  utils.log().info(message);
         MyExtentReport.getTest().log(Status.INFO, message);
     }
     public void closeApp() {
@@ -327,7 +328,7 @@ public class BaseClass {
         waitForEleVisibility(ele);
         clearElement(ele);
         ele.sendKeys(value);
-        addLogs("Entered data in "+ ele + " as " + value);
+      //  addLogs("Entered data in "+ ele + " as " + value);
     }
 
     public String getAndroidElementAttribute(MobileElement ele, String attributeName) {

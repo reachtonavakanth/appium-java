@@ -31,7 +31,7 @@ public class EndToEndTest2 extends BaseClass {
 	}
 
 	@Test
-	public void Tc_01() throws InterruptedException {
+	public void e2eSortLowToHigh() throws InterruptedException {
 
 		JSONObject jsonObjData = null;
 		JSONObject jsonObjMsg = null;
@@ -50,11 +50,10 @@ public class EndToEndTest2 extends BaseClass {
 		// new TestUtil().log("Login Successful !");
 
 		productsPage.tapListButton();
-		productsPage.tapSortButton();
 		softAssert.assertEquals("+", productsPage.getButtonText(), "Item has different button type");
-		
+		productsPage.tapSortButton();
 		productsPage.tapSortValue("lowToHigh");
-
+        System.out.println("================="+productsPage.getItemPrice());
 		softAssert.assertEquals("$7.99", productsPage.getItemPrice(), "Item Price not the lowest");
 
 		menuPage = productsPage.tapAddCartBtn();
