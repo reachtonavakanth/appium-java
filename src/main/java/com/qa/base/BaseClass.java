@@ -37,6 +37,8 @@ public class BaseClass {
     protected static ThreadLocal<String> platformName = new ThreadLocal<String>();
     protected static ThreadLocal<String> dateTime = new ThreadLocal<String>();
     protected static ThreadLocal<String> deviceName = new ThreadLocal<String>();
+    protected static ThreadLocal<String> platformVersion = new ThreadLocal<String>();
+//    protected static ThreadLocal<String> browser = new ThreadLocal<String>();
     protected static ThreadLocal<String> testDataFilePath = new ThreadLocal<String>();
     protected static ThreadLocal<String> stringsFilePath = new ThreadLocal<String>();
     protected static ThreadLocal<String> appConfigFilePath = new ThreadLocal<String>();
@@ -67,7 +69,20 @@ public class BaseClass {
     public void setPlatformName(String platform2) {
         platformName.set(platform2);
     }
+    public String getPlatformVersion() {
+        return platformVersion.get();
+    }
 
+    public void setPlatformVersion(String platformVersion2) {
+        platformVersion.set(platformVersion2);
+    }
+  /*  public String getBrowserStatus() {
+        return browser.get();
+    }*/
+
+  /*  public void setBrowserStatus(String browser2) {
+        browser.set(browser2);
+    }*/
     public String getDateTime() {
         return dateTime.get();
     }
@@ -149,6 +164,8 @@ public class BaseClass {
         setDateTime(utils.getDateTime());
         setPlatformName(platformName);
         setDeviceName(deviceName);
+        setPlatformVersion(platformVersion);
+       // setBrowserStatus(browser);
         setTestDataFilePath(testDataPath);
         setStringsFilePath(stringsPath);
         setAppConfigFilePath(propFilePath);
@@ -201,9 +218,9 @@ public class BaseClass {
         ThreadContext.put("ROUTINGKEY", "ServerLogs");
        // System.out.println(System.getProperty("os.name"));
         if (System.getProperty("os.name").contains(String.valueOf(Constants.Os.Windows))) {
-             //server = getAppiumServerDefault();
+        server = getAppiumServerDefault();
         } else if (System.getProperty("os.name").contains(String.valueOf(Constants.Os.Mac))) {
-           // server = getAppiumService();
+         server = getAppiumService();
         }
         if (!checkIfAppiumServerIsRunnning(4723)) { // May not work exactly appium limitation
             server.start();
@@ -230,31 +247,54 @@ public class BaseClass {
     }
 
     // for Windows
-    public AppiumDriverLocalService getAppiumServerDefault() {
-        return AppiumDriverLocalService.buildDefaultService();
+    public AppiumDriverLocalService getAppiumServerDefault() throws IOException {
+        String propFilePath = System.getProperty("user.dir") + File.separator + "src" +
+                File.separator + "main" + File.separator + "resources" +
+                File.separator + "appLaunch.properties";
+        if ((new TestUtil().getKeyValue(propFilePath,"browser")).equalsIgnoreCase("yes")){
+            System.out.println("In browser if condition");
+           // return  AppiumDriverLocalService.buildService(new AppiumServiceBuilder().usingAnyFreePort().withArgument(() -> "--allow-insecure","chromedriver_autodownload"));
+            return AppiumDriverLocalService.buildDefaultService(); // Above is the expected it's not working as expected so using default option as temp fix
+        }else
+            return AppiumDriverLocalService.buildDefaultService();
+
     }
 
     // for mac
-    public AppiumDriverLocalService getAppiumService() {
+    public AppiumDriverLocalService getAppiumService() throws IOException {
         HashMap<String, String> environment = new HashMap<String, String>();
         environment.put("PATH", "/Users/navakanthnavi/Library/Android/sdk:/Users/navakanthnavi/Library/Android/sdk/platform-tools:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin" + System.getenv("PATH"));
         environment.put("ANDROID_HOME", "/Users/navakanthnavi/Library/Android/sdk");
-        return AppiumDriverLocalService.buildService(new AppiumServiceBuilder()
-                .usingDriverExecutable(new File("/usr/local/bin/node"))
-                .withAppiumJS(new File("/usr/local/lib/node_modules/appium/build/lib/main.js"))
-                .usingPort(4723)
-                .withArgument(GeneralServerFlag.SESSION_OVERRIDE)
-//				.withArgument(() -> "--allow-insecure","chromedriver_autodownload")
-                .withEnvironment(environment)
-                .withLogFile(new File("ServerLogs/server.log")));
+
+        if ((utils.getKeyValue(getAppConfigFilePath(),"browser")).equalsIgnoreCase("true")){
+            System.out.println("In browser if condition");
+            return AppiumDriverLocalService.buildService(new AppiumServiceBuilder()
+                    .usingDriverExecutable(new File("/usr/local/bin/node"))
+                    .withAppiumJS(new File("/usr/local/lib/node_modules/appium/build/lib/main.js"))
+                    .usingPort(4723)
+                    .withArgument(GeneralServerFlag.SESSION_OVERRIDE)
+                    .withArgument(() -> "--allow-insecure","chromedriver_autodownload")
+                    .withEnvironment(environment)
+                    .withLogFile(new File("ServerLogs/server.log")));
+        }
+        else{
+            return AppiumDriverLocalService.buildService(new AppiumServiceBuilder()
+                    .usingDriverExecutable(new File("/usr/local/bin/node"))
+                    .withAppiumJS(new File("/usr/local/lib/node_modules/appium/build/lib/main.js"))
+                    .usingPort(4723)
+                    .withArgument(GeneralServerFlag.SESSION_OVERRIDE)
+//                    .withArgument(() -> "--allow-insecure","chromedriver_autodownload")
+                    .withEnvironment(environment)
+                    .withLogFile(new File("ServerLogs/server.log")));
+        }
     }
 
     @AfterSuite(alwaysRun = true)
     public void afterSuite() {
-        /*if (server.isRunning()) {
+        if (server.isRunning()) {
             server.stop();
             utils.log().info("Appium server stopped");
-        }*/
+        }
     }
 
     @AfterTest
