@@ -11,7 +11,9 @@
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <xmlfile>Runners/Android.xml,Runners/Android_Parallel.xml,Runners/iOS.xml,Runners/iOS_Parallel.xml</xmlfile>
+        <xmlfile>
+            Runners/Android.xml,Runners/Android_Parallel.xml,Runners/iOS.xml,Runners/iOS_Parallel.xml,Runners/Android_iOS.xml
+        </xmlfile>
     </properties>
     <build>
         <plugins>

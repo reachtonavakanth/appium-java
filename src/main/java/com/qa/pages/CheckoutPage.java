@@ -23,6 +23,7 @@ public class CheckoutPage extends MenuPage {
             System.out.println("in If condition");
             scrollTillText("CHECKOUT");
         }*/
+        if(getPlatformName().equalsIgnoreCase("Android"))
         scrollTillText("CHECKOUT");
         tapOnElement(checkoutBtn);
         return new CheckoutInformationPage();
