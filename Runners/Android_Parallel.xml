@@ -28,8 +28,9 @@
         <parameter name="systemPort" value="10001"/>
         <parameter name="chromeDriverPort" value="11001"/>
         <classes>
-            <class name="com.qa.tests.LoginTest"/>
             <class name="com.qa.tests.EndToEndTest"/>
+            <class name="com.qa.tests.LoginTest"/>
+
         </classes>
     </test>
 </suite> <!-- Suite -->

@@ -10,8 +10,8 @@
         <parameter name="wdaLocalPort" value="10000"/>
         <parameter name="webkitDebugProxyPort" value="11000"/>
         <classes>
-            <class name="com.qa.tests.LoginTest"/>
             <class name="com.qa.tests.EndToEndTest"/>
+            <class name="com.qa.tests.LoginTest"/>
         </classes>
     </test>
     <test name="Pixel_3">
@@ -26,8 +26,8 @@
         <parameter name="systemPort" value="10001"/>
         <parameter name="chromeDriverPort" value="11001"/>
         <classes>
-            <class name="com.qa.tests.LoginTest"/>
             <class name="com.qa.tests.EndToEndTest"/>
+            <class name="com.qa.tests.LoginTest"/>
         </classes>
     </test>
 </suite> <!-- Suite -->
