@@ -48,7 +48,7 @@ public class EndToEndTest extends BaseClass {
     }
 
     @Test
-    public void Tc_05_PurchaseProduct() throws InterruptedException {
+    public void Tc_01_PurchaseProduct() throws InterruptedException {
         try {
             jsonObjData = new TestUtil().getJsonObject(getTestDataFilePath(), "TC_04");
             jsonObjMsg = new TestUtil().getJsonObject(getStringsFileFilePath(), "LoginPage");

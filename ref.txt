@@ -17,4 +17,3 @@ lsof -P | grep ':4723' | awk '{print $2}' | xargs kill -9
 ********* Windows ********************
 netstat -ano|findstr "PID :4723"
 taskkill /pid 11388 /f
-
